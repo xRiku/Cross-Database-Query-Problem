@@ -10,6 +10,10 @@ int main(int argc, char** argv) {
   int commas = countCommas(argv[1]);
   printf("%d\n", commas);
   FILE **files = openFiles(argv[2], argv[3], argv[4]);
+  char *line;
+  long unsigned int n = 0;
+  getline(&line, &n, files[0]);
+  printf("%s\n", line);
   closeFiles(files);
   return 0;
 }

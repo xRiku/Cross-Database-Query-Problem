@@ -20,6 +20,7 @@ FILE **openFiles(char *file1, char *file2, char* file3) {
   return files;
 }
 
+
 /**
  * Conta o número de vírgulas na string L1 
  */
