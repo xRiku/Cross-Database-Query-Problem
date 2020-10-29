@@ -5,7 +5,7 @@ BIN		:= bin
 SRC		:= src
 INCLUDE	:= include
 
-# PROGARGS	:= entradas/0.txt 3 saidas/0.txt
+PROGARGS	:= inputs/arquivo1.txt inputs/arquivo2.txt
 
 EXECUTABLE	:= trab2
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
@@ -22,7 +22,6 @@ all: clean $(EXECUTABLE)
 
 .PHONY: clean
 clean:
-	-$(RM) $(EXECUTABLE)
 	-$(RM) $(OBJECTS)
 
 
