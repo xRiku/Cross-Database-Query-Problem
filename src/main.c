@@ -5,9 +5,11 @@ int main(int argc, char** argv) {
   // if (argc != 8) {
   //   return 1;
   // }
-  int P = atoi(argv[1]);
-  int M = atoi(argv[2]);
-  FILE **files = openFiles(argv);
+  // int P = atoi(argv[1]);
+  // int M = atoi(argv[2]);
+  int commas = countCommas(argv[1]);
+  printf("%d\n", commas);
+  FILE **files = openFiles(argv[2], argv[3], argv[4]);
   closeFiles(files);
   return 0;
 }
