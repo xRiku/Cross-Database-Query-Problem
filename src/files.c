@@ -62,3 +62,10 @@ int *listToIntArray(char *L, int length) {
   return intList;
 }
 
+/**
+ * Libera o espaço alocado para o vetor.
+ */
+void deleteIntArray(int *L) {
+  free(L);
+}
+

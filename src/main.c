@@ -21,10 +21,12 @@ int main(int argc, char** argv) {
   putchar('\n');
 
   FILE **files = openFiles(argv[3], argv[4], argv[5]);
-  char *line;
-  long unsigned int n = 0;
-  getline(&line, &n, files[0]);
+  // char *line;
+  // long unsigned int n = 0;
+  // getline(&line, &n, files[0]);
   // printf("%s\n", line);
+  deleteIntArray(L1);
+  deleteIntArray(L2);
   closeFiles(files);
   return 0;
 }

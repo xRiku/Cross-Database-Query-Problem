@@ -13,4 +13,6 @@ int countCommas(char *);
 
 int *listToIntArray(char *L, int length);
 
+void deleteIntArray(int *L);
+
 #endif
