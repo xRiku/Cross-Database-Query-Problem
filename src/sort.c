@@ -27,7 +27,8 @@ void deleteIntArray(int *L) {
  * Calcula o número de palavras por linha para ser alocado em memória
  */
 int wordsPerLine(FILE *file) {
-  char *line;
+  // Evitar erro no valgrind
+  char *line = NULL;
   long unsigned int n = 0;
   getline(&line, &n, file);
   int K = countCommas(line) + 1;
@@ -54,6 +55,7 @@ char ***createMemoMatrix(int M, int K) {
 void externalSorting(FILE *file, int M, int P) {
   int K = wordsPerLine(file);
   printf("K = %d\n", K);
-  // char ***matrix = createMemoMatrix(M, K);
+  char ***matrix = createMemoMatrix(M, K);
+
 }
 
