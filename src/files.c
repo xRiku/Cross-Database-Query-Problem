@@ -34,38 +34,4 @@ void closeFiles(FILE **files) {
   free(files);
 }
 
-/**
- * Conta o número de vírgulas na string
- */
-int countCommas(char *List) {
-  int n = 0;
-  for (int i = 0; List[i] != '\0'; i++) {
-    if (List[i] == ',') {
-      n += 1;
-    }
-  }
-  return n;
-}
-
-/**
- * Converte a lista em um vetor de inteiros.
- */
-int *listToIntArray(char *L, int length) {
-  int *intList = malloc(sizeof(int) * length);
-  char *token = strtok(L, ",");
-  int i = 0;
-  while (token != NULL) {
-    intList[i] = atoi(token);
-    i++;
-    token = strtok(NULL, ",");
-  }
-  return intList;
-}
-
-/**
- * Libera o espaço alocado para o vetor.
- */
-void deleteIntArray(int *L) {
-  free(L);
-}
 
