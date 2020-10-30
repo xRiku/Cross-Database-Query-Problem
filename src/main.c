@@ -25,15 +25,14 @@ int main(int argc, char** argv) {
   }
   putchar('\n');
 
-  FILE **files = openFiles(argv[5], argv[6], argv[7]);
-  externalSorting(files[0], M, P);
+  FILE **files = createFiles(3);
+  openFiles(&files[0], argv[5], "r");
+  openFiles(&files[1], argv[6], "r");
+  openFiles(&files[2], argv[7], "w");
+  // externalSorting(files[0], M, P);
 
-  // char *line;
-  // long unsigned int n = 0;
-  // getline(&line, &n, files[0]);
-  // printf("%s\n", line);
   deleteIntArray(L1);
   deleteIntArray(L2);
-  closeFiles(files);
+  closeFiles(files, 3);
   return 0;
 }

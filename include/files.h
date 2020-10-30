@@ -5,9 +5,11 @@
 #include <stdio.h>
 #include <string.h>
 
-FILE **openFiles(char *file1, char *file2, char* file3);
+FILE **createFiles(int n);
 
-void closeFiles(FILE **);
+void openFiles(FILE **file, char *name, char* type);
+
+void closeFiles(FILE **, int);
 
 
 

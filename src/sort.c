@@ -1,5 +1,6 @@
 #include "../include/sort.h"
 #include "../include/strings.h"
+#include "../include/files.h"
 
 /**
  * Converte a lista em um vetor de inteiros.
@@ -53,6 +54,7 @@ char ***createMemoMatrix(int M, int K) {
  * Realiza a ordenação externa intercalada
  */
 void externalSorting(FILE *file, int M, int P) {
+  FILE **pfiles = createFiles(P - 1);
   int K = wordsPerLine(file);
   printf("K = %d\n", K);
   char ***matrix = createMemoMatrix(M, K);
