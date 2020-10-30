@@ -54,10 +54,16 @@ char ***createMemoMatrix(int M, int K) {
  * Realiza a ordenação externa intercalada
  */
 void externalSorting(FILE *file, int M, int P) {
-  FILE **pfiles = createFiles(P - 1);
+  FILE **pfiles = createFiles(2 * P);
+  char *fileName = malloc(sizeof(char)*16);
+  for (int i = 0; i < 2 * P; i++) {
+    sprintf(fileName, "f%d.txt", i);
+    printf("%s\n", fileName);
+  //   openFiles(&pfiles[i], fileName, "W");
+  }
   int K = wordsPerLine(file);
   printf("K = %d\n", K);
-  char ***matrix = createMemoMatrix(M, K);
+  // char ***matrix = createMemoMatrix(M, K);
 
 }
 
