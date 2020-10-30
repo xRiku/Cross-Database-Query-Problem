@@ -40,17 +40,6 @@ int wordsPerLine(FILE *file) {
 }
 
 /**
- * Aloca espaço para a matriz de caracteres
- */
-char ***createMemoMatrix(int M, int K) {
-  char ***matrix = malloc(sizeof(char**) * M);
-  for (int i = 0; i < M; i++) {
-    matrix[i] = malloc(sizeof(char*) * K);
-  }
-  return matrix;
-}
-
-/**
  * Realiza a ordenação externa intercalada
  */
 void externalSorting(FILE *file, int M, int P) {
@@ -58,12 +47,30 @@ void externalSorting(FILE *file, int M, int P) {
   char *fileName = malloc(sizeof(char)*16);
   for (int i = 0; i < 2 * P; i++) {
     sprintf(fileName, "f%d.txt", i);
-    printf("%s\n", fileName);
-  //   openFiles(&pfiles[i], fileName, "W");
+    openFiles(&pfiles[i], fileName, "w");
   }
   int K = wordsPerLine(file);
-  printf("K = %d\n", K);
-  // char ***matrix = createMemoMatrix(M, K);
+  // printf("K = %d\n", K);
+  char ***matrix = createMemoMatrix(M, K);
+  char *line = NULL;
+  long unsigned int n = 0;
+  for (int i = 0; i < M; i++) {
+    getline(&line, &n, file);
+    char *token = strtok(line, ",");
+    for (int j = 0; j < K; j++) {
+      strcpy(matrix[i][j],token);
+      token = strtok(NULL, ",");
+    }
+  }
+  // putchar('\n');
+  for (int i = 0; i < M; i++) {
+    for (int j = 0; j < K; j++) {
+      printf("%s ", matrix[i][j]);
+    }
+  }
+
+  free(fileName);
+  closeFiles(pfiles, 2*P);
 
 }
 
