@@ -5,7 +5,7 @@ BIN		:= bin
 SRC		:= src
 INCLUDE	:= include
 
-PROGARGS	:= 0,2 inputs/arquivo1.txt inputs/arquivo2.txt outputs/arquivo3.txt
+PROGARGS	:= 1,0 0,2 inputs/arquivo1.txt inputs/arquivo2.txt outputs/arquivo3.txt
 
 EXECUTABLE	:= trab2
 SOURCEDIRS	:= $(shell find $(SRC) -type d)

@@ -1,5 +1,9 @@
 #include "../include/files.h"
 
+
+/**
+ * Realiza a abertura dos arquivos
+ */
 FILE **openFiles(char *file1, char *file2, char* file3) {
   FILE **files = malloc(sizeof(FILE*) * 3);
   files[0] = fopen(file1, "r");
@@ -20,22 +24,41 @@ FILE **openFiles(char *file1, char *file2, char* file3) {
   return files;
 }
 
+/**
+ * Realiza o fechamento dos arquivos.
+ */
+void closeFiles(FILE **files) {
+  for (int i = 0; i < 3; i++) {
+    fclose(files[i]);
+  }
+  free(files);
+}
 
 /**
- * Conta o número de vírgulas na string L1 
+ * Conta o número de vírgulas na string
  */
-int countCommas(char *L1) {
+int countCommas(char *List) {
   int n = 0;
-  for (int i = 0; L1[i] != '\0'; i++) {
-    if (L1[i] == ',') {
+  for (int i = 0; List[i] != '\0'; i++) {
+    if (List[i] == ',') {
       n += 1;
     }
   }
   return n;
 }
 
-void closeFiles(FILE **files) {
-  for (int i = 0; i < 3; i++) {
-    fclose(files[i]);
+/**
+ * Converte a lista em um vetor de inteiros.
+ */
+int *listToIntArray(char *L, int length) {
+  int *intList = malloc(sizeof(int) * length);
+  char *token = strtok(L, ",");
+  int i = 0;
+  while (token != NULL) {
+    intList[i] = atoi(token);
+    i++;
+    token = strtok(NULL, ",");
   }
+  return intList;
 }
+
