@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
   openFiles(&files[0], argv[5], "r");
   openFiles(&files[1], argv[6], "r");
   openFiles(&files[2], argv[7], "w");
-  externalSorting(files[0], M, P);
+  externalSorting(files[0], M, P, L1, listLength);
 
   deleteIntArray(L1);
   deleteIntArray(L2);
