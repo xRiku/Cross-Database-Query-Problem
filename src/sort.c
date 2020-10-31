@@ -41,15 +41,31 @@ int wordsPerLine(FILE *file) {
 /**
  * Comparador para ordenação no quicksort
  */
-int comparatorFromList(void *a, void *b) {
+int comparatorFromList(void *a, void *b, void *arg) {
+  int *list = arg;
+  int n = sizeof(list)/sizeof(int);
+  // for (int i = 0; i < n; i++) {
+  // }
+  // printf("%d\n", list[0]);
+  // putchar('\n');
   char **g1 = *((char ***) a);
   char **g2 = *((char ***) b);
-  int intg1 = atoi(g1[0]);
-  int intg2 = atoi(g2[0]);
-  if (intg1 != 0) {
-    return intg2 - intg1; 
+  int result;
+  for (int i = 0; i < n; i++) {
+    if (i == 1) {
+    }
+    int intg1 = atoi(g1[list[i]]);
+    int intg2 = atoi(g2[list[i]]);
+    if (intg1 != 0) {
+      result = intg1 - intg2; 
+    } else {
+      result = strcmp(g1[i], g2[i]);
+    }
+    if (result != 0) {
+      return result;
+    }
   }
-  return strcmp(g2[0], g1[0]);
+  return result;
 }
 
 /**
@@ -92,7 +108,8 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
     }
   }
   free(line);
-  qsort(matrix, M, sizeof(matrix[0]), comparatorFromList);
+  // Criar comparator para multiplos elementos
+  qsort_r(matrix, M, sizeof(matrix[0]), comparatorFromList, list);
   for (int i = 0; i < M; i++) {
     for (int j = 0; j < K; j++) {
       printf("%s ", matrix[i][j]);
