@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SLOTS 31
+#define SLOTS 51
 
+void deleteMemoMatrix(char ***matrix, int M, int K);
 
 char ***createMemoMatrix(int M, int K);
 

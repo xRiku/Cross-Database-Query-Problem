@@ -11,9 +11,10 @@ void deleteIntArray(int *L);
 
 int wordsPerLine(FILE *file);
 
+void compareBlock(FILE** pfiles, int P, int M, int* list, int K, int N);
+
+int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N);
+
 void externalSorting(FILE *file, int M, int P, int *list, int listLength);
-
-void deleteMemoMatrix(char ***matrix, int M, int K);
-
 
 #endif
