@@ -39,21 +39,15 @@ int wordsPerLine(FILE *file) {
 }
 
 /**
- * Comparador para ordenação no quicksort
+ * Comparador para ordenação no quicksort baseado na lista de colunas.
  */
 int comparatorFromList(void *a, void *b, void *arg) {
   int *list = arg;
   int n = sizeof(list)/sizeof(int);
-  // for (int i = 0; i < n; i++) {
-  // }
-  // printf("%d\n", list[0]);
-  // putchar('\n');
   char **g1 = *((char ***) a);
   char **g2 = *((char ***) b);
   int result;
   for (int i = 0; i < n; i++) {
-    if (i == 1) {
-    }
     int intg1 = atoi(g1[list[i]]);
     int intg2 = atoi(g2[list[i]]);
     if (intg1 != 0) {
@@ -89,27 +83,49 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
   char *fileName = malloc(sizeof(char)*16);
   for (int i = 0; i < 2 * P; i++) {
     sprintf(fileName, "f%d.txt", i);
-    openFiles(&pfiles[i], fileName, "w");
+    openFiles(&pfiles[i], fileName, "w+");
   }
   int K = wordsPerLine(file);
   // printf("K = %d\n", K);
   char ***matrix = createMemoMatrix(M, K);
   char *line = NULL;
   long unsigned int n = 0;
-  for (int i = 0; i < M; i++) {
-    getline(&line, &n, file);
-    if (feof(file)) {
-      break;
+  //Tirar do while para voltar a funcionar
+  int pCopy = P;
+  while(!feof(file)) {
+    int halve = -1;
+    for (int i = 0; i < M; i++) {
+      getline(&line, &n, file);
+      if (feof(file)) {
+        halve = i;
+        break;
+      }
+      char *token = strtok(line, ",");
+      for (int j = 0; j < K; j++) {
+        strcpy(matrix[i][j],token);
+        token = strtok(NULL, ",");
+      }
     }
-    char *token = strtok(line, ",");
-    for (int j = 0; j < K; j++) {
-      strcpy(matrix[i][j],token);
-      token = strtok(NULL, ",");
+    qsort_r(matrix, M, sizeof(matrix[0]), comparatorFromList, list);
+    for (int i = 0; i < M; i++) {
+      if (i == halve) {
+        break;
+      }
+      for (int j = 0; j < K; j++) {
+        if (j == K - 1) {
+          fprintf(pfiles[pCopy], "%s", matrix[i][j]);
+        } else {
+          fprintf(pfiles[pCopy], "%s", matrix[i][j]);
+        }
+      }
+    }
+    if (pCopy == 2*P - 1) {
+      pCopy = P;
+    } else {
+      pCopy++;
     }
   }
   free(line);
-  // Criar comparator para multiplos elementos
-  qsort_r(matrix, M, sizeof(matrix[0]), comparatorFromList, list);
   for (int i = 0; i < M; i++) {
     for (int j = 0; j < K; j++) {
       printf("%s ", matrix[i][j]);
