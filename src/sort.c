@@ -90,7 +90,6 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
   char ***matrix = createMemoMatrix(M, K);
   char *line = NULL;
   long unsigned int n = 0;
-  //Tirar do while para voltar a funcionar
   int pCopy = P;
   while(!feof(file)) {
     int halve = -1;
@@ -102,8 +101,21 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
       }
       char *token = strtok(line, ",");
       for (int j = 0; j < K; j++) {
-        strcpy(matrix[i][j],token);
-        token = strtok(NULL, ",");
+        if (token[strlen(token) - 1] == '\n') {
+          char *lineAux = malloc(sizeof(char)*31);
+          for (int k = 0; k < strlen(token); k++) {
+            if (token[k] == '\n') {
+              lineAux[k] = '\0';  
+              break;
+            }
+            lineAux[k] = token[k];
+          }
+          strcpy(matrix[i][j], lineAux);
+          free(lineAux);
+        } else {
+          strcpy(matrix[i][j], token);
+        }
+          token = strtok(NULL, ",");
       }
     }
     qsort_r(matrix, M, sizeof(matrix[0]), comparatorFromList, list);
@@ -113,9 +125,9 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
       }
       for (int j = 0; j < K; j++) {
         if (j == K - 1) {
-          fprintf(pfiles[pCopy], "%s", matrix[i][j]);
+          fprintf(pfiles[pCopy], "%s\n", matrix[i][j]);
         } else {
-          fprintf(pfiles[pCopy], "%s", matrix[i][j]);
+          fprintf(pfiles[pCopy], "%s,", matrix[i][j]);
         }
       }
     }
@@ -130,6 +142,7 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
     for (int j = 0; j < K; j++) {
       printf("%s ", matrix[i][j]);
     }
+    putchar('\n');
   }
 
   free(fileName);
