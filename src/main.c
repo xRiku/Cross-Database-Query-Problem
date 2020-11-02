@@ -16,15 +16,6 @@ int main(int argc, char** argv) {
   int *L1 = listToIntArray(argv[3], listLength);
   int *L2 = listToIntArray(argv[4], listLength);
 
-  // for (int i = 0; i < listLength; i++) {
-  //   printf("%d ", L1[i]);
-  // }
-  // putchar('\n');
-  // for (int i = 0; i < listLength; i++) {
-  //   printf("%d ", L2[i]);
-  // }
-  // putchar('\n');
-
   FILE **files = createFiles(3);
   openFiles(&files[0], argv[5], "r");
   openFiles(&files[1], argv[6], "r");

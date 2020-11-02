@@ -64,17 +64,9 @@ int comparatorFromList(void *a, void *b, void *arg) {
 }
 
 /**
- * Verifica a menor linha (baseado na lista) da tabela
+ * Cria matriz para validar blocos utilizando quantas linhas cada arquivo tem.
  */
-int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
-  int listLength = sizeof(list)/sizeof(list[0]);
-  // for (int i = 0; i < listLength; i++) {
-  //   printf("%d ", list[i]);
-  // }
-  // putchar('\n');
-  int nCopy = N;
-  int validationLines = (N%(M*P) == 0 ? N/(M*P) : N/(M*P) + 1);
-  char ***auxMatrix = createMemoMatrix(P, K);
+int** validationBlockMatrix(int M, int N, int P, int validationLines) {
   int** pValid = malloc(sizeof(int*) * validationLines);
   for (int i = 0; i < validationLines; i++) {
     pValid[i] = malloc(sizeof(int) * P);
@@ -83,46 +75,50 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
       pValid[i][j] = 0;
     }
   }
-
   for (int i = 0; i < validationLines; i++) {
     for (int j = 0; j < P; j++) {
-      if (nCopy == 0) {
+      if (N == 0) {
         continue;
       }
-      if (nCopy/M >= 1) {
+      if (N/M >= 1) {
         pValid[i][j] += M;
-        nCopy -= M;
+        N -= M;
       } else {
-        pValid[i][j] = nCopy % M;
-        nCopy = 0;
+        pValid[i][j] = N % M;
+        N = 0;
       }
     }
   }
-  for (int i = 0; i < validationLines; i++) {
+  return pValid;
+}
+
+/**
+ * Verifica a menor linha (baseado na lista) da tabela
+ */
+int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
+  int listLength = sizeof(list)/sizeof(list[0]);
+  int nCopy = N;
+  int validationLines = (N%(M*P) == 0 ? N/(M*P) : N/(M*P) + 1);
+  char ***auxMatrix = createMemoMatrix(P, K);
+  int **pValid = validationBlockMatrix(M, N, P, validationLines);
+
+  /* for (int i = 0; i < validationLines; i++) {
     for (int j = 0; j < P; j++) {
       printf("%d ", pValid[i][j]);
     }
     putchar('\n');
-  }
-  int counter = 0;
+  } */
+
   char *line = NULL;
   long unsigned int n = 0;
-  // printf("N: %d\n", N);
-  // for (int i = 0; i < N; i++) {
-  //   pValid[counter]++;
-  //   counter++;
-  //   if (i == P - 1) {
-  //     counter = 0;
-  //   }
-  // }
-  counter = 0;
-  for (int i = 0; i < P; i++) {
+  /* for (int i = 0; i < P; i++) {
     getline(&line, &n, pfiles[P + i]);
     if (feof(pfiles[P + i])) {
       break;
     }
+    
     char *token = strtok(line, ",");
-    for (int j = 0; j < K; j ++) { 
+    for (int j = 0; j < K; j ++) {
       if (token[strlen(token) - 1] == '\n') {
         char *lineAux = malloc(sizeof(char) * SLOTS);
         for (int k = 0; k < strlen(token); k++) {
@@ -139,8 +135,12 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
       }
       token = strtok(NULL, ",");
     }
-  }
-  int firstStringIndex = 0;
+  } */
+
+  
+
+
+  int firstStringIndex = -1;
   
   char **firstString = malloc(sizeof(char*) * K);
   for (int i = 0; i < K; i ++) {
@@ -150,11 +150,18 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
   for (int i = 0; i < K; i++) {
     strcpy(firstString[i], auxMatrix[0][i]);
   }
+  
 
   //Função de tirar o menor funcional
-  int result = 0;
-  for (int i = 0; i < P; i++) {
+  /* for (int i = 0; i < P; i++) {
+    if (pValid[a][i] == 0){
+      continue;
+    } 
+    // if (i == P - 2) {
+    //   break;
+    // }
     for (int j = 0; j < K; j++) {
+      int result = 0;
       for (int k = 0; k < listLength; k++) {
         int intg1 = atoi(firstString[list[k]]);
         int intg2 = atoi(auxMatrix[i][list[k]]);
@@ -174,42 +181,153 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
         }
       }
     }
-  }
+  } */
 
-  printf("Indice vencedor: %d\n", firstStringIndex);
-  for (int i = 0; i < K; i++) {
-    printf("%s ", firstString[i]);
+  for (int a = 0; a < validationLines; a++) {
+    //leitura 1
+    for (int i = 0; i < P; i++) {
+      if (pValid[a][i] == 0) {
+        continue;
+      }
+      getline(&line, &n, pfiles[P + i]);
+      if (feof(pfiles[P + i])) {
+        break;
+      }
+      char *token = strtok(line, ",");
+      for (int j = 0; j < K; j ++) {
+        if (token[strlen(token) - 1] == '\n') {
+          char *lineAux = malloc(sizeof(char) * SLOTS);
+          for (int k = 0; k < strlen(token); k++) {
+            if (token[k] == '\n') {
+              lineAux[k] = '\0';  
+              break;
+            }
+            lineAux[k] = token[k];
+          }
+          strcpy(auxMatrix[i][j], lineAux);
+          free(lineAux);
+        } else {
+          strcpy(auxMatrix[i][j], token);
+        }
+        token = strtok(NULL, ",");
+      }
+    }
+
+    for (int i = 0; i < P; i++) {
+      for (int j = 0; j < K; j++) {
+        printf("%s ", auxMatrix[i][j]);
+      }
+    putchar('\n');
+    }
+    char **firstString = malloc(sizeof(char*) * K);
+    for (int i = 0; i < K; i ++) {
+      firstString[i] = malloc(sizeof(char) * SLOTS);
+    }
+
+    int halt = 0;
+    for (int i = 0; halt != P; i++) {
+      printf("Entrou aqui: %d\n", i);
+      if (i == 0) {
+        halt = 0;
+      }
+      // halt++;
+      if (i < P && pValid[a][i] == 0){
+        halt++;
+        continue;
+      }
+      
+      if (pValid[a][i] != 0 && i == firstStringIndex) {
+        printf("Entrou, a: %d i: %d\n", a, i);
+        getline(&line, &n, pfiles[P + i]);
+        char *token = strtok(line, ",");
+        for (int j = 0; j < K; j ++) {
+          if (token[strlen(token) - 1] == '\n') {
+            char *lineAux = malloc(sizeof(char) * SLOTS);
+            for (int k = 0; k < strlen(token); k++) {
+              if (token[k] == '\n') {
+                lineAux[k] = '\0';  
+                break;
+              }
+              lineAux[k] = token[k];
+            }
+            strcpy(auxMatrix[i][j], lineAux);
+            free(lineAux);
+          } else {
+            strcpy(auxMatrix[i][j], token);
+          }
+          token = strtok(NULL, ",");
+        }
+        firstStringIndex = -1;
+      }
+      // if (i == P - 2) {
+      //   break;
+      // }
+      
+      
+      if (i == P ) {
+        int valid = -1;
+        for (int j = 0; j < P; j++) {
+          if (pValid[a][j] != 0) {
+            valid = j;
+            break;
+          }
+        }
+        for (int j = 0; j < K; j++) {
+          strcpy(firstString[j], auxMatrix[valid][j]);
+        }
+        firstStringIndex = valid;
+        for (int b = 0; b < P; b++) {
+          if (pValid[a][b] == 0) {
+            continue;
+          }
+          for (int j = 0; j < K; j++) {
+            int result = 0;
+            for (int k = 0; k < listLength; k++) {
+              int intg1 = atoi(firstString[list[k]]);
+              int intg2 = atoi(auxMatrix[b][list[k]]);
+              if (intg1 != 0) {
+                result = intg1 - intg2;
+              } else {
+                result = strcmp(firstString[j][k], (auxMatrix[b][j][k]));
+              }
+              if (result != 0) {
+                break;
+              }
+            }
+            if (result > 0) {
+              firstStringIndex = b;
+              for (int k = 0; k < K; k++) {
+                strcpy(firstString[k], auxMatrix[b][k]);
+              }
+            }
+          }
+        }
+        pValid[a][firstStringIndex]--;
+        printf("Melhor %d\n", firstStringIndex);
+        for (int w = 0; w < K; w++) {
+          printf("%s ", firstString[w]);
+        }
+        putchar('\n');
+        i = -1;
+      }
+      
+    }
+    firstStringIndex = -1;
   }
-  putchar('\n');
-  
   for (int i = 0; i < P; i++) {
     for (int j = 0; j < K; j++) {
       printf("%s ", auxMatrix[i][j]);
     }
     putchar('\n');
   }
+  // Contador de blocos
 
-
-  // for (int i = 0; i < P; i++) { 
-  //   printf("%d ", pValid[i]);
+  // printf("Indice vencedor: %d\n", firstStringIndex);
+  // for (int i = 0; i < K; i++) {
+  //   printf("%s ", firstString[i]);
   // }
   // putchar('\n');
-  // int *readLines = malloc(sizeof(int) * P);
-  // char **highestValues = malloc(sizeof(char*) * n);
-  // for (int i = 0; i < n; i++) {
-  //   highestValues[i] = malloc(sizeof(char*) * 31);
-  // }
-  // for (int i = 0; i < P; i++) {
-  //   getline(&line, &n, pfiles[P + i]);
-  //   rewind(pfiles[P + i]);
-  //   readLines[i]++;
-    // Testar depois URGENTE ****************************************
-  //   if (line != NULL) {
-  //     if (highestValues[i] == NULL) {
-  //       strcpy(highestValues[i], line);
-  //     }
-  //   }
-  // }
+
   free(line);
 }
 
@@ -293,9 +411,7 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
   }
   // Até aqui da pra por em uma função talvez
   
-  // for (int i = 0; i < N; i++) {
-    compareBlock(pfiles, P, M, list, K, N);
-  // }
+  compareBlock(pfiles, P, M, list, K, N);
 
   // Print da matrix
   for (int i = 0; i < M; i++) {
