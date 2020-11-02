@@ -72,8 +72,38 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
   //   printf("%d ", list[i]);
   // }
   // putchar('\n');
+  int nCopy = N;
+  int validationLines = (N%(M*P) == 0 ? N/(M*P) : N/(M*P) + 1);
   char ***auxMatrix = createMemoMatrix(P, K);
-  // int* pValid = malloc(sizeof(int) * P);
+  int** pValid = malloc(sizeof(int*) * validationLines);
+  for (int i = 0; i < validationLines; i++) {
+    pValid[i] = malloc(sizeof(int) * P);
+    for (int j = 0; j < P; j++) {
+      // Inicializar com 0 cada posição
+      pValid[i][j] = 0;
+    }
+  }
+
+  for (int i = 0; i < validationLines; i++) {
+    for (int j = 0; j < P; j++) {
+      if (nCopy == 0) {
+        continue;
+      }
+      if (nCopy/M >= 1) {
+        pValid[i][j] += M;
+        nCopy -= M;
+      } else {
+        pValid[i][j] = nCopy % M;
+        nCopy = 0;
+      }
+    }
+  }
+  for (int i = 0; i < validationLines; i++) {
+    for (int j = 0; j < P; j++) {
+      printf("%d ", pValid[i][j]);
+    }
+    putchar('\n');
+  }
   int counter = 0;
   char *line = NULL;
   long unsigned int n = 0;
@@ -138,6 +168,7 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
         }
       }
       if (result > 0) {
+        firstStringIndex = i;
         for (int k = 0; k < K; k++) {
           strcpy(firstString[k], auxMatrix[i][k]);
         }
@@ -145,6 +176,7 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
     }
   }
 
+  printf("Indice vencedor: %d\n", firstStringIndex);
   for (int i = 0; i < K; i++) {
     printf("%s ", firstString[i]);
   }
