@@ -305,9 +305,12 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N) {
         pValid[a][firstStringIndex]--;
         printf("Melhor %d\n", firstStringIndex);
         for (int w = 0; w < K; w++) {
-          printf("%s ", firstString[w]);
+          if (w == K - 1) {
+            fprintf(pfiles[a], "%s\n", firstString[w]);
+          } else {
+            fprintf(pfiles[a], "%s,", firstString[w]);
+          }
         }
-        putchar('\n');
         i = -1;
       }
       
