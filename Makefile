@@ -44,3 +44,6 @@ val2: all
 
 full: all
 	- valgrind -v --leak-check=full ./$(EXECUTABLE) $(PROGARGS)
+
+full2: all
+	- valgrind -v --leak-check=full ./$(EXECUTABLE) $(PROGARGS2)

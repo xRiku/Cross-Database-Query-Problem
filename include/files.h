@@ -7,7 +7,9 @@
 
 FILE **createFiles(int n);
 
-void openFiles(FILE **file, char *name, char* type);
+void openFile(FILE **file, char *name, char* type);
+
+void rewindFiles(FILE **files, int);
 
 void closeFiles(FILE **, int);
 
