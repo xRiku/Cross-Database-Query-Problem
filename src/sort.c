@@ -115,12 +115,12 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
   char ***auxMatrix = createMemoMatrix(P, K);
   int **pValid = validationBlockMatrix(M, N, P, validationLines);
 
-  /* for (int i = 0; i < validationLines; i++) {
+  for (int i = 0; i < validationLines; i++) {
     for (int j = 0; j < P; j++) {
       printf("%d ", pValid[i][j]);
     }
     putchar('\n');
-  } */
+  }
 
   char *line = NULL;
   long unsigned int n = 0;
@@ -137,11 +137,12 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
 
   for (int a = 0; a < validationLines; a++) {
     //leitura 1
-    for (int i = 0 + pCopy; i < P + pCopy; i++) {
+    for (int i = 0; i < P; i++) {
       if (pValid[a][i] == 0) {
         continue;
       }
       getline(&line, &n, pfiles[P - pCopy + i]);
+      // printf("%s", line);
       if (feof(pfiles[P - pCopy + i])) {
         break;
       }
@@ -166,13 +167,16 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
       }
     }
 
-    for (int i = 0; i < P; i++) {
-      for (int j = 0; j < K; j++) {
-        printf("%s ", auxMatrix[i][j]);
-      }
-    putchar('\n');
-    }
-    
+    // for (int i = 0; i < P; i++) {
+    //   for (int j = 0; j < K; j++) {
+    //     // if (pValid[i][j] == 0) {
+    //     //   continue;
+    //     // }
+    //     printf("%s ", auxMatrix[i][j]);
+    //   }
+    // putchar('\n');
+    // }
+
     int halt = 0;
     for (int i = 0; halt != P; i++) {
       printf("Entrou aqui: %d\n", i);
@@ -250,13 +254,17 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
             }
           }
         }
+        for (int w = 0; w < K; w++) {
+          printf("%s ", firstString[w]);
+        }
+        putchar('\n');
         pValid[a][firstStringIndex]--;
         printf("Melhor %d\n", firstStringIndex);
         for (int w = 0; w < K; w++) {
           if (w == K - 1) {
-            fprintf(pfiles[a - pCopy], "%s\n", firstString[w]);
+            fprintf(pfiles[a + pCopy], "%s\n", firstString[w]);
           } else {
-            fprintf(pfiles[a - pCopy], "%s,", firstString[w]);
+            fprintf(pfiles[a + pCopy], "%s,", firstString[w]);
           }
         }
         i = -1;
@@ -281,7 +289,7 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
 
   free(line);
   deleteValidationMatrix(pValid, validationLines);
-  deleteMemoMatrix(auxMatrix, M, K);
+  deleteMemoMatrix(auxMatrix, P, K);
   return validationLines;
 }
 
@@ -301,21 +309,21 @@ void compareBlock(FILE** pfiles, int P, int M, int* list, int K, int N) {
   // printf("%p\n", &pfiles[3]);
   // printf("%p\n", &pfiles[P]);
   // printf("%p\n", &pfiles[5]);
-  // while (writtenFiles != 1) {
-  //   printf("writtenFiles: %d\n", writtenFiles);
-  //   if (pCopy == 0) {
-  //     writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
-  //     pCopy = P;
-  //   } else {
-  //     writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
-  //     pCopy = 0;
-  //   }
-  //   rewindFiles(pfiles, 2*P);
-  //   i++;
-  //   printf("SubDone!\n");
-  // }
-  // printf("Done!\n");
-  printf("Maior: %d\n", lowestLine(pfiles, P, M, list, K, N, 0));
+  while (writtenFiles != 1) {
+    printf("writtenFiles: %d\n", writtenFiles);
+    if (pCopy == 0) {
+      writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
+      pCopy = P;
+    } else {
+      writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
+      pCopy = 0;
+    }
+    rewindFiles(pfiles, 2*P);
+    i++;
+    printf("SubDone!\n");
+  }
+  printf("Done!\n");
+  // printf("Maior: %d\n", lowestLine(pfiles, P, M, list, K, N, 0));
 }
 
 /**
