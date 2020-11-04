@@ -179,7 +179,7 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
 
     int halt = 0;
     for (int i = 0; halt != P; i++) {
-      printf("Entrou aqui: %d\n", i);
+      // printf("Entrou aqui: %d\n", i);
       if (i == 0) {
         halt = 0;
       }
@@ -254,12 +254,12 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
             }
           }
         }
-        for (int w = 0; w < K; w++) {
-          printf("%s ", firstString[w]);
-        }
-        putchar('\n');
+        // for (int w = 0; w < K; w++) {
+        //   printf("%s ", firstString[w]);
+        // }
+        // putchar('\n');
         pValid[a][firstStringIndex]--;
-        printf("Melhor %d\n", firstStringIndex);
+        // printf("Melhor %d\n", firstStringIndex);
         for (int w = 0; w < K; w++) {
           if (w == K - 1) {
             fprintf(pfiles[a + pCopy], "%s\n", firstString[w]);
@@ -300,15 +300,6 @@ void compareBlock(FILE** pfiles, int P, int M, int* list, int K, int N) {
   int writtenFiles = 0;
   int i = 0;
   int pCopy = 0;
-  // printf("%p\n", pfiles);
-  // printf("%p\n", &pfiles[0]);
-  // printf("%p\n", &pfiles[1]);
-  // printf("%p\n", &pfiles[2]);
-  // FILE **q = &pfiles[3];
-  // printf("%p\n", q);
-  // printf("%p\n", &pfiles[3]);
-  // printf("%p\n", &pfiles[P]);
-  // printf("%p\n", &pfiles[5]);
   while (writtenFiles != 1) {
     printf("writtenFiles: %d\n", writtenFiles);
     if (pCopy == 0) {
@@ -318,6 +309,7 @@ void compareBlock(FILE** pfiles, int P, int M, int* list, int K, int N) {
       writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
       pCopy = 0;
     }
+    printf("writtenFiles: %d\n", writtenFiles);
     rewindFiles(pfiles, 2*P);
     i++;
     printf("SubDone!\n");
@@ -344,11 +336,14 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
   char *line = NULL;
   long unsigned int n = 0;
   int pCopy = P;
+  int preventRepeated = 0;
+  int halt;
   while(!feof(file)) {
     //Saber em que iteração parar para imprimir no arquivo
-    int halt = -1;
+    halt = -1;
     for (int i = 0; i < M; i++) {
       getline(&line, &n, file);
+      // printf("%s", line);
       if (feof(file)) {
         halt = i;
         break;
@@ -374,8 +369,44 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
       }
       // Número de páginas
       N++;
+      // if (preventRepeated == M - 1) {
+      //   preventRepeated = 0;
+      // } else {
+      //   preventRepeated++;
+      // }
     }
-    qsort_r(matrix, M, sizeof(matrix[0]), comparatorFromList, list);
+    // for (int i = 0; i < M; i++) {
+    //   for (int j = 0; j < K; j++) {
+    //     printf("%s ", matrix[i][j]);
+    //   }
+    //   putchar('\n');
+    // }
+    printf("HALT: %d\n", halt);
+    if (halt != -1) {
+      char ***auxMatrix = createMemoMatrix(halt, K);
+      for (int i = 0; i < halt; i++) {
+        for (int j = 0; j < K; j++) {
+          strcpy(auxMatrix[i][j], matrix[i][j]);
+          // printf("%s ", auxMatrix[i][j]);
+        }
+        // putchar('\n');
+      }
+      char ***auxMatrix2 = matrix;
+      matrix = auxMatrix;
+      for (int i = 0; i < halt; i++) {
+        for (int j = 0; j < K; j++) {
+          printf("%s ", auxMatrix[i][j]);
+        }
+        putchar('\n');
+      }
+      auxMatrix = NULL;
+      deleteMemoMatrix(auxMatrix2, M, K);
+    }
+    if (halt == - 1) {
+      qsort_r(matrix, M, sizeof(matrix[0]), comparatorFromList, list);
+    } else {
+      qsort_r(matrix, halt, sizeof(matrix[0]), comparatorFromList, list);
+    }
     for (int i = 0; i < M; i++) {
       if (i == halt) {
         break;
@@ -398,20 +429,20 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
     rewind(pfiles[P+i]);
   }
   // Até aqui da pra por em uma função talvez
-  
+  printf("N: %d\n", N);
   compareBlock(pfiles, P, M, list, K, N);
 
   // Print da matrix
-  /* for (int i = 0; i < M; i++) {
-    for (int j = 0; j < K; j++) {
-      printf("%s ", matrix[i][j]);
-    }
-    putchar('\n');
-  } */
+  // for (int i = 0; i < M; i++) {
+  //   for (int j = 0; j < K; j++) {
+  //     printf("%s ", matrix[i][j]);
+  //   }
+  //   putchar('\n');
+  // }
 
   free(line);
   free(fileName);
-  deleteMemoMatrix(matrix, M, K);
+  deleteMemoMatrix(matrix, halt == 1 ? M : halt, K);
   closeFiles(pfiles, 2*P);
 
 }
