@@ -33,7 +33,7 @@ void rewindFiles(FILE **files, int n) {
 /**
  * Responsável pela renomeação dos arquivos ordenados.
  */
-void renameFile(int fileValue, int order) {
+void renameFile(int fileValue, int P, int order) {
   char *oldname = malloc(sizeof(char)*16);
   char *newName = malloc(sizeof(char)*13);
   if (fileValue) {
@@ -46,10 +46,11 @@ void renameFile(int fileValue, int order) {
     }
   } else {
     if (order == 0) {
-      strcpy(oldname ,"f3.txt");
+      sprintf(oldname, "f%d.txt", P);
+      // strcpy(oldname ,"f3.txt");
       strcpy(newName ,"ordered0.txt");
     } else {
-      strcpy(oldname ,"f3.txt");
+      sprintf(oldname, "f%d.txt", P);
       strcpy(newName ,"ordered1.txt");
     }
   }

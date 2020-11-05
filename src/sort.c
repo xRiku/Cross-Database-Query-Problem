@@ -106,6 +106,7 @@ void deleteValidationMatrix(int** matrix, int validationLines) {
 /**
  * Verifica a menor linha (baseado na lista) da tabela.
  */
+// Trocar o nome dessa função
 int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) {
   int writtenfiles = 0;
   int listLength = sizeof(list) / sizeof(list[0]);
@@ -136,13 +137,19 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
   }
 
   for (int a = 0; a < validationLines; a++) {
+    printf("Linha: %d\n", a);
     //leitura 1
     for (int i = 0; i < P; i++) {
+      printf("%d %d\n", a, i);
       if (pValid[a][i] == 0) {
         continue;
       }
+      // if (a == 2 && i == 0) {
+      //   getline(&line, &n, pfiles[P - pCopy + i]);
+      //   printf("Aqui %s", line);
+      // }      
       getline(&line, &n, pfiles[P - pCopy + i]);
-      // printf("%s", line);
+      printf("Aqui %s", line);
       if (feof(pfiles[P - pCopy + i])) {
         break;
       }
@@ -161,11 +168,12 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
           free(lineAux);
         } else {
           strcpy(auxMatrix[i][j], token);
-          
         }
         token = strtok(NULL, ",");
       }
+      
     }
+
 
     // for (int i = 0; i < P; i++) {
     //   for (int j = 0; j < K; j++) {
@@ -176,10 +184,12 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
     //   }
     // putchar('\n');
     // }
+    // putchar('\n');
 
+
+    // printf("xkzcjhasd\n");
     int halt = 0;
     for (int i = 0; halt != P; i++) {
-      // printf("Entrou aqui: %d\n", i);
       if (i == 0) {
         halt = 0;
       }
@@ -191,6 +201,7 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
       if (i < P && pValid[a][i] != 0 && i == firstStringIndex) {
         // printf("Entrou, a: %d i: %d\n", a, i);
         getline(&line, &n, pfiles[P - pCopy + i]);
+        printf("%s", line);
         char *token = strtok(line, ",");
         for (int j = 0; j < K; j ++) {
           if (token[strlen(token) - 1] == '\n') {
@@ -254,17 +265,19 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
             }
           }
         }
-        // for (int w = 0; w < K; w++) {
-        //   printf("%s ", firstString[w]);
-        // }
-        // putchar('\n');
+        for (int w = 0; w < K; w++) {
+          printf("%s ", firstString[w]);
+        }
+        putchar('\n');
         pValid[a][firstStringIndex]--;
-        // printf("Melhor %d\n", firstStringIndex);
+        printf("Melhor %d\n", firstStringIndex);
+        int chosenFile = (a + 1) % P == 0 ? P - 1 : ((a + 1) % P ) - 1;
+        printf("File: %d\n", chosenFile);
         for (int w = 0; w < K; w++) {
           if (w == K - 1) {
-            fprintf(pfiles[a + pCopy], "%s\n", firstString[w]);
+            fprintf(pfiles[chosenFile + pCopy], "%s\n", firstString[w]);
           } else {
-            fprintf(pfiles[a + pCopy], "%s,", firstString[w]);
+            fprintf(pfiles[chosenFile + pCopy], "%s,", firstString[w]);
           }
         }
         i = -1;
@@ -315,7 +328,7 @@ void compareBlock(FILE** pfiles, int P, int M, int* list, int K, int N, int orde
     printf("SubDone!\n");
   }
 
-  renameFile(pCopy, order);
+  renameFile(pCopy, P, order);
   printf("Done!\n");
   // printf("Maior: %d\n", lowestLine(pfiles, P, M, list, K, N, 0));
 }
@@ -347,7 +360,7 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength, int or
       getline(&line, &n, file);
       // printf("%s", line);
       if (feof(file)) {
-        halt = i;
+          halt = i;
         break;
       }
       char *token = strtok(line, ",");
@@ -404,6 +417,12 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength, int or
       auxMatrix = NULL;
       deleteMemoMatrix(auxMatrix2, M, K);
     }
+    // for (int i = 0; i < M; i++) {
+    //   for (int j = 0; j < K; j++) {
+    //     printf("%s ", matrix[i][j]);
+    //   }
+    //   putchar('\n');
+    // }
     if (halt == - 1) {
       qsort_r(matrix, M, sizeof(matrix[0]), comparatorFromList, list);
     } else {
@@ -443,9 +462,9 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength, int or
   // }
 
   free(line);
-  free(fileName);
   deleteMemoMatrix(matrix, halt == -1 ? M : halt, K);
   closeFiles(pfiles, 2 * P);
-
+  
+  free(fileName);
 }
 

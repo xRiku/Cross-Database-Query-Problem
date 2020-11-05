@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
   //Listas para query nos bancos
   int *L1 = listToIntArray(argv[3], listLength);
   int *L2 = listToIntArray(argv[4], listLength);
-
+  char *fileName = NULL;
   FILE **files = createFiles(3);
   openFile(&files[0], argv[5], "r");
   openFile(&files[1], argv[6], "r");
@@ -25,5 +25,9 @@ int main(int argc, char** argv) {
   deleteIntArray(L1);
   deleteIntArray(L2);
   closeFiles(files, 2);
+  // for (int i = 0; i < 2 * P; i++) {
+  //   sprintf(fileName, "f%d.txt", i);
+  //   remove(fileName);
+  // }
   return 0;
 }

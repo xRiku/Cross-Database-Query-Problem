@@ -11,7 +11,7 @@ void openFile(FILE **file, char *name, char* type);
 
 void rewindFiles(FILE **files, int);
 
-void renameFiles(int fileValue, int order);
+void renameFile(int fileValue, int P, int order);
 
 void mergeFiles(char* outputFile, int *List1, int *List2, int listLength);
 
