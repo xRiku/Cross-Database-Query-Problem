@@ -148,7 +148,7 @@ void mergeFiles(char* outputFile, int *L1, int *L2, int listLength) {
     for (int i = 0; i < listLength; i++) {
       int intg1 = atoi(matrix1[L1[i]]);
       int intg2 = atoi(matrix2[L2[i]]);
-      if (intg1 != 0 || intg2 != 0) {
+      if (intg1 != 0 && intg2 != 0) {
         result = intg1 - intg2;
       } else {
         result = strcmp(matrix1[L1[i]], matrix2[L2[i]]);

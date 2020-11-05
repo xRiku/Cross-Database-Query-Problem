@@ -5,7 +5,7 @@ BIN		:= bin
 SRC		:= src
 INCLUDE	:= include
 
-PROGARGS	:= 11 11 0,1,4 4,0,1 inputs/file1.txt inputs/file2.txt outputs/fileCompare.txt
+PROGARGS	:= 3 3 0,1,4 4,0,1 inputs/file1.txt inputs/file2.txt outputs/fileCompare.txt
 
 PROGARGS2	:= 2 4 1,0 0,2 inputs/arquivo1.txt inputs/arquivo2.txt outputs/arquivo.txt
 

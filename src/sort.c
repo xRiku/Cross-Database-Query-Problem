@@ -51,7 +51,7 @@ int comparatorFromList(void *a, void *b, void *arg) {
   for (int i = 0; i < n; i++) {
     int intg1 = atoi(g1[list[i]]);
     int intg2 = atoi(g2[list[i]]);
-    if (intg1 != 0 || intg2 != 0) {
+    if (intg1 != 0 && intg2 != 0) {
       result = intg1 - intg2; 
     } else {
       result = strcmp(g1[i], g2[i]);
@@ -125,10 +125,6 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
 
   char *line = NULL;
   long unsigned int n = 0;
-
-  
-
-
   int firstStringIndex = -1;
   
   char **firstString = malloc(sizeof(char*) * K);
@@ -143,11 +139,7 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
       printf("%d %d\n", a, i);
       if (pValid[a][i] == 0) {
         continue;
-      }
-      // if (a == 2 && i == 0) {
-      //   getline(&line, &n, pfiles[P - pCopy + i]);
-      //   printf("Aqui %s", line);
-      // }      
+      }   
       getline(&line, &n, pfiles[P - pCopy + i]);
       printf("Aqui %s", line);
       if (feof(pfiles[P - pCopy + i])) {
@@ -187,7 +179,6 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
     // putchar('\n');
 
 
-    // printf("xkzcjhasd\n");
     int halt = 0;
     for (int i = 0; halt != P; i++) {
       if (i == 0) {
@@ -197,9 +188,7 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
         halt++;
         continue;
       }
-      
       if (i < P && pValid[a][i] != 0 && i == firstStringIndex) {
-        // printf("Entrou, a: %d i: %d\n", a, i);
         getline(&line, &n, pfiles[P - pCopy + i]);
         printf("%s", line);
         char *token = strtok(line, ",");
@@ -240,23 +229,32 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
         }
         firstStringIndex = valid;
         for (int b = 0; b < P; b++) {
+          printf("Teste\n");
           if (pValid[a][b] == 0) {
             continue;
           }
+          printf("First string\n");
+          for (int j = 0; j < K; j++) {
+            printf("%s ", firstString[j]);
+          }
+        putchar('\n');
           for (int j = 0; j < K; j++) {
             int result = 0;
             for (int k = 0; k < listLength; k++) {
               int intg1 = atoi(firstString[list[k]]);
               int intg2 = atoi(auxMatrix[b][list[k]]);
-              if (intg1 != 0 || intg2 != 0) {
+              if (intg1 != 0 && intg2 != 0) {
                 result = intg1 - intg2;
               } else {
-                result = strcmp(firstString[j][k], (auxMatrix[b][j][k]));
+                printf("Teste2\n");
+                // printf("%s\n", auxMatrix[b][j][k]);
+                result = strcmp(firstString[list[k]], auxMatrix[b][list[k]]);
               }
               if (result != 0) {
                 break;
               }
             }
+            printf("Teste3\n");
             if (result > 0) {
               firstStringIndex = b;
               for (int k = 0; k < K; k++) {
@@ -384,18 +382,8 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength, int or
       }
       // Número de páginas
       N++;
-      // if (preventRepeated == M - 1) {
-      //   preventRepeated = 0;
-      // } else {
-      //   preventRepeated++;
-      // }
     }
-    // for (int i = 0; i < M; i++) {
-    //   for (int j = 0; j < K; j++) {
-    //     printf("%s ", matrix[i][j]);
-    //   }
-    //   putchar('\n');
-    // }
+
     printf("HALT: %d\n", halt);
     if (halt != -1) {
       char ***auxMatrix = createMemoMatrix(halt, K);
