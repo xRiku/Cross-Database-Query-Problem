@@ -210,7 +210,7 @@ void mergeFiles(char* outputFile, int *L1, int *L2, int listLength) {
     if (result == 0) {
       int j = 0;
       for (int i = 0; i < listLength; i++) {
-        if (i == listLength - 1) {
+        // if (i == listLength - 1) {
           if (j == 0) {
             fprintf(outFile, "%s", matrix1[L1[i]]);
             j++;
@@ -219,7 +219,7 @@ void mergeFiles(char* outputFile, int *L1, int *L2, int listLength) {
           }
           strcpy(matrix1[L1[i]], "-");
           strcpy(matrix2[L2[i]], "-");
-        }
+        
       }
       for (int i = 0; i < K1; i++) {
         if (strcmp(matrix1[i], "-") != 0) {

@@ -7,7 +7,7 @@ INCLUDE	:= include
 
 PROGARGS	:= 11 11 0,1,4 4,0,1 inputs/file1.txt inputs/file2.txt outputs/fileCompare.txt
 
-PROGARGS2	:= 3 3 1,0 0,2 inputs/arquivo1.txt inputs/arquivo2.txt outputs/arquivo.txt
+PROGARGS2	:= 2 2 1,0 0,2 inputs/arquivo1.txt inputs/arquivo2.txt outputs/arquivo.txt
 
 EXECUTABLE	:= trab2
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
