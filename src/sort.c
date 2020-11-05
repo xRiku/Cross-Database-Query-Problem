@@ -51,7 +51,7 @@ int comparatorFromList(void *a, void *b, void *arg) {
   for (int i = 0; i < n; i++) {
     int intg1 = atoi(g1[list[i]]);
     int intg2 = atoi(g2[list[i]]);
-    if (intg1 != 0) {
+    if (intg1 != 0 || intg2 != 0) {
       result = intg1 - intg2; 
     } else {
       result = strcmp(g1[i], g2[i]);
@@ -237,7 +237,7 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
             for (int k = 0; k < listLength; k++) {
               int intg1 = atoi(firstString[list[k]]);
               int intg2 = atoi(auxMatrix[b][list[k]]);
-              if (intg1 != 0) {
+              if (intg1 != 0 || intg2 != 0) {
                 result = intg1 - intg2;
               } else {
                 result = strcmp(firstString[j][k], (auxMatrix[b][j][k]));
@@ -442,7 +442,7 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
 
   free(line);
   free(fileName);
-  deleteMemoMatrix(matrix, halt == 1 ? M : halt, K);
+  deleteMemoMatrix(matrix, halt == -1 ? M : halt, K);
   closeFiles(pfiles, 2*P);
 
 }
