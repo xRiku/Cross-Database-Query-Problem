@@ -11,6 +11,8 @@ void openFile(FILE **file, char *name, char* type);
 
 void rewindFiles(FILE **files, int);
 
+void renameFiles(int fileValue, int order);
+
 void closeFiles(FILE **, int);
 
 

@@ -20,8 +20,8 @@ int main(int argc, char** argv) {
   openFile(&files[0], argv[5], "r");
   openFile(&files[1], argv[6], "r");
   openFile(&files[2], argv[7], "w");
-  // externalSorting(files[0], M, P, L1, listLength);
-  externalSorting(files[1], M, P, L2, listLength);
+  externalSorting(files[0], M, P, L1, listLength, 0);
+  externalSorting(files[1], M, P, L2, listLength, 1);
 
   deleteIntArray(L1);
   deleteIntArray(L2);

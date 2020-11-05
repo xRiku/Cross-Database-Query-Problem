@@ -31,6 +31,52 @@ void rewindFiles(FILE **files, int n) {
 }
 
 /**
+ * Responsável pela renomeação dos arquivos ordenados.
+ */
+void renameFile(int fileValue, int order) {
+  char *oldname = malloc(sizeof(char)*16);
+  char *newName = malloc(sizeof(char)*13);
+  if (fileValue) {
+    if (order == 0) {
+      strcpy(oldname ,"f0.txt");
+      strcpy(newName ,"ordered0.txt");
+    } else {
+      strcpy(oldname ,"f0.txt");
+      strcpy(newName ,"ordered1.txt");
+    }
+  } else {
+    if (order == 0) {
+      strcpy(oldname ,"f3.txt");
+      strcpy(newName ,"ordered0.txt");
+    } else {
+      strcpy(oldname ,"f3.txt");
+      strcpy(newName ,"ordered1.txt");
+    }
+  }
+  rename(oldname, newName);
+  free(oldname);
+  free(newName);
+  //     //checar se existe com o mesmo nome
+  //     char oldname[] = "f3.txt";
+  //     char newname[] = "ordenado2.txt";
+  //     rename(oldname, newname);
+  //   } else {
+  //     char oldname[] = "f3.txt";
+  //     char newname[] = "ordenado1.txt";
+  //     rename(oldname, newname);
+  //   }
+  // } else {
+  //     char oldname[] = "f0.txt";
+  //     char newname[] = "ordenado2.txt";
+  //     rename(oldname, newname);
+  //   } else {
+  //     char oldname[] = "f0.txt";
+  //     char newname[] = "ordenado1.txt";
+  //     rename(oldname, newname);
+  //   }
+}
+
+/**
  * Realiza o fechamento dos arquivos.
  */
 void closeFiles(FILE **files, int n) {

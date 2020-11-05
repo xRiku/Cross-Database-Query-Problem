@@ -296,7 +296,7 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
 /**
  * Compara os blocos (M linhas de cada arquivo) para ordenação
  */
-void compareBlock(FILE** pfiles, int P, int M, int* list, int K, int N) {
+void compareBlock(FILE** pfiles, int P, int M, int* list, int K, int N, int order) {
   int writtenFiles = 0;
   int i = 0;
   int pCopy = 0;
@@ -314,6 +314,8 @@ void compareBlock(FILE** pfiles, int P, int M, int* list, int K, int N) {
     i++;
     printf("SubDone!\n");
   }
+
+  renameFile(pCopy, order);
   printf("Done!\n");
   // printf("Maior: %d\n", lowestLine(pfiles, P, M, list, K, N, 0));
 }
@@ -321,7 +323,7 @@ void compareBlock(FILE** pfiles, int P, int M, int* list, int K, int N) {
 /**
  * Realiza a ordenação externa intercalada.
  */
-void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
+void externalSorting(FILE *file, int M, int P, int *list, int listLength, int order) {
   int N = 0;
   // Número de iterações da memoria ate o arquivo terminar
   FILE **pfiles = createFiles(2 * P);
@@ -430,7 +432,7 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength) {
   }
   // Até aqui da pra por em uma função talvez
   printf("N: %d\n", N);
-  compareBlock(pfiles, P, M, list, K, N);
+  compareBlock(pfiles, P, M, list, K, N, order);
 
   // Print da matrix
   // for (int i = 0; i < M; i++) {
