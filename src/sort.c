@@ -445,7 +445,7 @@ void externalSorting(FILE *file, int M, int P, int *list, int listLength, int or
   free(line);
   free(fileName);
   deleteMemoMatrix(matrix, halt == -1 ? M : halt, K);
-  closeFiles(pfiles, 2*P);
+  closeFiles(pfiles, 2 * P);
 
 }
 

@@ -19,12 +19,11 @@ int main(int argc, char** argv) {
   FILE **files = createFiles(3);
   openFile(&files[0], argv[5], "r");
   openFile(&files[1], argv[6], "r");
-  openFile(&files[2], argv[7], "w");
-  externalSorting(files[0], M, P, L1, listLength, 0);
-  externalSorting(files[1], M, P, L2, listLength, 1);
-
+  // externalSorting(files[0], M, P, L1, listLength, 0);
+  // externalSorting(files[1], M, P, L2, listLength, 1);
+  mergeFiles(argv[7], L1, L2, listLength);
   deleteIntArray(L1);
   deleteIntArray(L2);
-  closeFiles(files, 3);
+  closeFiles(files, 2);
   return 0;
 }

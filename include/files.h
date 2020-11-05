@@ -13,6 +13,8 @@ void rewindFiles(FILE **files, int);
 
 void renameFiles(int fileValue, int order);
 
+void mergeFiles(char* outputFile, int *List1, int *List2, int listLength);
+
 void closeFiles(FILE **, int);
 
 
