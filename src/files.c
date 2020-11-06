@@ -81,7 +81,7 @@ void mergeFiles(char* outputFile, int *L1, int *L2, int listLength) {
   int K1 = wordsPerLine(input1);
   printf("K1: %d\n", K1);
   int K2 = wordsPerLine(input2);
-  printf("K1: %d\n", K2);
+  printf("K2: %d\n", K2);
   char *line = NULL;
   long unsigned int n = 0;
   char **matrix1 = malloc(sizeof(char*) * K1);

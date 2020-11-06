@@ -54,7 +54,7 @@ int comparatorFromList(void *a, void *b, void *arg) {
     if (intg1 != 0 && intg2 != 0) {
       result = intg1 - intg2; 
     } else {
-      result = strcmp(g1[i], g2[i]);
+      result = strcmp(g1[list[i]], g2[list[i]]);
     }
     if (result != 0) {
       return result;
