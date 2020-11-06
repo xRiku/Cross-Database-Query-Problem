@@ -1,0 +1,5 @@
+L1 = 0,1,4
+L2 = 4,0,1
+Arquivo 1 = file1.txt
+Arquivo 2 = file2.txt
+Saída = file.txt

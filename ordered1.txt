@@ -1,5 +1,5 @@
-UE,CV,49,KL,FH,NQ
-JD,OB,W,XK,H6,KG
-H,T5,A5,E,K,R
-T4,X,UY,Q3,RN,M
-WH,0,6M,JI,VS,NZ
+1,b,1
+1,a,10
+4,b,3
+4,b,5
+5,5,2

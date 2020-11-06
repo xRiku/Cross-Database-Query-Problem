@@ -49,13 +49,13 @@ int comparatorFromList(void *a, void *b, void *arg) {
   char **g2 = *((char ***) b);
   int result;
   for (int i = 0; i < n; i++) {
-    int intg1 = atoi(g1[list[i]]);
-    int intg2 = atoi(g2[list[i]]);
-    if (intg1 != 0 && intg2 != 0) {
-      result = intg1 - intg2; 
-    } else {
+    // int intg1 = atoi(g1[list[i]]);
+    // int intg2 = atoi(g2[list[i]]);
+    // if (intg1 != 0 && intg2 != 0) {
+    //   result = intg1 - intg2; 
+    // } else {
       result = strcmp(g1[list[i]], g2[list[i]]);
-    }
+    // }
     if (result != 0) {
       return result;
     }
@@ -229,32 +229,24 @@ int lowestLine(FILE **pfiles, int P, int M, int* list, int K, int N, int pCopy) 
         }
         firstStringIndex = valid;
         for (int b = 0; b < P; b++) {
-          printf("Teste\n");
           if (pValid[a][b] == 0) {
             continue;
           }
-          printf("First string\n");
-          for (int j = 0; j < K; j++) {
-            printf("%s ", firstString[j]);
-          }
-        putchar('\n');
           for (int j = 0; j < K; j++) {
             int result = 0;
             for (int k = 0; k < listLength; k++) {
-              int intg1 = atoi(firstString[list[k]]);
-              int intg2 = atoi(auxMatrix[b][list[k]]);
-              if (intg1 != 0 && intg2 != 0) {
-                result = intg1 - intg2;
-              } else {
-                printf("Teste2\n");
+              // int intg1 = atoi(firstString[list[k]]);
+              // int intg2 = atoi(auxMatrix[b][list[k]]);
+              // if (intg1 != 0 && intg2 != 0) {
+              //   result = intg1 - intg2;
+              // } else {
                 // printf("%s\n", auxMatrix[b][j][k]);
                 result = strcmp(firstString[list[k]], auxMatrix[b][list[k]]);
-              }
+              // }
               if (result != 0) {
                 break;
               }
             }
-            printf("Teste3\n");
             if (result > 0) {
               firstStringIndex = b;
               for (int k = 0; k < K; k++) {
