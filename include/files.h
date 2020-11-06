@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "list.h"
 
 FILE **createFiles(int n);
 
@@ -13,7 +14,7 @@ void rewindFiles(FILE **files, int);
 
 void renameFile(int fileValue, int P, int order);
 
-void mergeFiles(char* outputFile, int *List1, int *List2, int listLength);
+void mergeFiles(char* outputFile, List *List1, List *List2);
 
 void closeFiles(FILE **, int);
 

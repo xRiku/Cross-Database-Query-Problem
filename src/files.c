@@ -39,19 +39,19 @@ void renameFile(int fileValue, int P, int order) {
   if (fileValue) {
     if (order == 0) {
       strcpy(oldname ,"f0.txt");
-      strcpy(newName ,"ordered0.txt");
+      strcpy(newName ,"sorted0.txt");
     } else {
       strcpy(oldname ,"f0.txt");
-      strcpy(newName ,"ordered1.txt");
+      strcpy(newName ,"sorted1.txt");
     }
   } else {
     if (order == 0) {
       sprintf(oldname, "f%d.txt", P);
       // strcpy(oldname ,"f3.txt");
-      strcpy(newName ,"ordered0.txt");
+      strcpy(newName ,"sorted0.txt");
     } else {
       sprintf(oldname, "f%d.txt", P);
-      strcpy(newName ,"ordered1.txt");
+      strcpy(newName ,"sorted1.txt");
     }
   }
   rename(oldname, newName);
@@ -62,20 +62,23 @@ void renameFile(int fileValue, int P, int order) {
 /**
  * Une os arquivos no arquivo de saída baseado em suas querys
  */
-void mergeFiles(char* outputFile, int *L1, int *L2, int listLength) {
+void mergeFiles(char* outputFile, List *L1, List *L2) {
+  int *array1 = getArray(L1);
+  int *array2 = getArray(L2);
+  int listLength = getSize(L1);
   FILE *outFile = fopen(outputFile, "w");
   if(outFile == NULL){
 		fprintf(stderr, "Erro ao abrir %s\n", outputFile);
 		exit(1);
 	}
-  FILE *input1 = fopen("ordered0.txt", "r");
+  FILE *input1 = fopen("sorted0.txt", "r");
   if(input1 == NULL){
-		fprintf(stderr, "Erro ao abrir %s\n", "ordered0");
+		fprintf(stderr, "Erro ao abrir %s\n", "sorted0");
 		exit(1);
 	}
-  FILE *input2 = fopen("ordered1.txt", "r");
+  FILE *input2 = fopen("sorted1.txt", "r");
   if(input2 == NULL){
-		fprintf(stderr, "Erro ao abrir %s\n", "ordered1");
+		fprintf(stderr, "Erro ao abrir %s\n", "sorted1");
 		exit(1);
 	}
   int K1 = wordsPerLine(input1);
@@ -151,7 +154,7 @@ void mergeFiles(char* outputFile, int *L1, int *L2, int listLength) {
       // if (intg1 != 0 && intg2 != 0) {
       //   result = intg1 - intg2;
       // } else {
-        result = strcmp(matrix1[L1[i]], matrix2[L2[i]]);
+        result = strcmp(matrix1[array1[i]], matrix2[array2[i]]);
       // }
       if (result != 0) {
         break;
@@ -213,13 +216,13 @@ void mergeFiles(char* outputFile, int *L1, int *L2, int listLength) {
       for (int i = 0; i < listLength; i++) {
         // if (i == listLength - 1) {
           if (j == 0) {
-            fprintf(outFile, "%s", matrix1[L1[i]]);
+            fprintf(outFile, "%s", matrix1[array1[i]]);
             j++;
           } else {
-            fprintf(outFile, ",%s", matrix1[L1[i]]);
+            fprintf(outFile, ",%s", matrix1[array1[i]]);
           }
-          strcpy(matrix1[L1[i]], "-");
-          strcpy(matrix2[L2[i]], "-");
+          strcpy(matrix1[array1[i]], "-");
+          strcpy(matrix2[array2[i]], "-");
         
       }
       for (int i = 0; i < K1; i++) {
