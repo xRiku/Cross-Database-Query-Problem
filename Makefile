@@ -5,6 +5,8 @@ BIN		:= bin
 SRC		:= src
 INCLUDE	:= include
 
+PROGARGS0	:= 3 5 1,3 4,8 inputs/file100000-100_python.txt inputs/file2.txt outputs/wannabeFile.txt
+
 PROGARGS	:= 3 5 0,1,4 4,0,1 inputs/file1.txt inputs/file2.txt outputs/wannabeFile.txt
 
 PROGARGS2	:= 3 5 0,1,4 4,0,1 inputs/2/file1.txt inputs/2/file2.txt inputs/2/wannabeFile.txt
@@ -29,6 +31,9 @@ clean:
 	-$(RM) $(OBJECTS)
 
 
+run0: all
+	./$(EXECUTABLE) $(PROGARGS0)
+
 run: all
 	./$(EXECUTABLE) $(PROGARGS)
 
@@ -40,6 +45,9 @@ run3: all
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) $(CINCLUDES) $^ -o $@ $(LIBRARIES) -lm
+
+val0: all
+	valgrind ./$(EXECUTABLE) $(PROGARGS0)
 
 val: all
 	valgrind ./$(EXECUTABLE) $(PROGARGS)

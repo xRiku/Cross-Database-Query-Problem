@@ -25,7 +25,7 @@ int comparatorFromList(void *a, void *b, void *arg) {
   int *array = getArray(list);
   // Tamanho do vetor arg
   int n = getSize(list);
-  printf("n: %d\n", n);
+  // printf("n: %d\n", n);
   char **g1 = *((char ***) a);
   char **g2 = *((char ***) b);
   int result;
@@ -88,16 +88,16 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
   int *array = getArray(list);
   int nCopy = N;
   int validationLines = (N % (M * P) == 0 ? N / (M * P) : N / (M * P) + 1);
-  printf("Validation: %d\n", validationLines);
+  // printf("Validation: %d\n", validationLines);
   char ***auxMatrix = createMemoMatrix(P, K);
   int **pValid = validationBlockMatrix(M, N, P, validationLines);
 
-  for (int i = 0; i < validationLines; i++) {
-    for (int j = 0; j < P; j++) {
-      printf("%d ", pValid[i][j]);
-    }
-    putchar('\n');
-  }
+  // for (int i = 0; i < validationLines; i++) {
+  //   for (int j = 0; j < P; j++) {
+  //     printf("%d ", pValid[i][j]);
+  //   }
+  //   putchar('\n');
+  // }
 
   char *line = NULL;
   long unsigned int n = 0;
@@ -280,7 +280,7 @@ void compareBlock(FILE** pfiles, int P, int M, List* list, int K, int N, int ord
   int i = 0;
   int pCopy = 0;
   while (writtenFiles != 1) {
-    printf("writtenFiles: %d\n", writtenFiles);
+    // printf("writtenFiles: %d\n", writtenFiles);
     if (pCopy == 0) {
       writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
       pCopy = P;
@@ -288,14 +288,14 @@ void compareBlock(FILE** pfiles, int P, int M, List* list, int K, int N, int ord
       writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
       pCopy = 0;
     }
-    printf("writtenFiles: %d\n", writtenFiles);
+    // printf("writtenFiles: %d\n", writtenFiles);
     rewindFiles(pfiles, 2*P);
     i++;
-    printf("SubDone!\n");
+    // printf("SubDone!\n");
   }
 
   renameFile(pCopy, P, order);
-  printf("Done!\n");
+  // printf("Done!\n");
   // printf("Maior: %d\n", lowestLine(pfiles, P, M, list, K, N, 0));
 }
 
@@ -407,8 +407,8 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
     rewind(pfiles[P+i]);
   }
   // Até aqui da pra por em uma função talvez
-  printf("N: %d\n", N);
-  printf("listLength: %d\n", listLength);
+  // printf("N: %d\n", N);
+  // printf("listLength: %d\n", listLength);
   compareBlock(pfiles, P, M, list, K, N, order);
 
   // Print da matrix

@@ -1,7 +1,10 @@
 #include "../include/list.h"
 
 
-// Para ter a informação do tamanho do vetor dinamico.
+/** Necessário para ter a informação do tamanho do vetor dinamico
+ *  na hora de passar como argumento no qsort_r.
+ */ 
+
 struct list {
   int size;
   int *array;
@@ -20,7 +23,8 @@ List *createList(char *L, int length) {
 }
 
 /**
- * Converte a lista em um vetor de inteiros.
+ * Converte a lista em um vetor de inteiros,
+ * modifica o ponteiro size para ter o tamanho do vetor.
  */
 int *strToIntArray(char *L, int length, int *size) {
   int *intList = malloc(sizeof(char *) * length);
@@ -56,7 +60,6 @@ void deleteList(List *list) {
   deleteIntArray(list->array);
   free(list);
 }
-
 
 
 /**

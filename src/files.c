@@ -2,7 +2,7 @@
 #include "../include/strings.h"
 
 /**
- * Realiza a alocação para um vetor de Arquivos
+ * Realiza a alocação para um vetor de arquivos.
  */
 FILE **createFiles(int n) {
   FILE **files = malloc(sizeof(FILE*) * n);
@@ -11,7 +11,7 @@ FILE **createFiles(int n) {
 
 
 /**
- * Realiza a abertura de um arquivo
+ * Realiza a abertura de um arquivo.
  */
 void openFile(FILE **file, char *name, char* type) {
   *file = fopen(name, type);
@@ -22,7 +22,7 @@ void openFile(FILE **file, char *name, char* type) {
 }
 
 /**
- * Realiza rewind em todos os arquivos
+ * Realiza rewind em todos os arquivos.
  */
 void rewindFiles(FILE **files, int n) {
   for (int i = 0; i < n; i ++) {
@@ -34,7 +34,9 @@ void rewindFiles(FILE **files, int n) {
  * Responsável pela renomeação dos arquivos ordenados.
  */
 void renameFile(int fileValue, int P, int order) {
+  // Tamanho 16 para cobrir o tamanho máximo de um inteiro.
   char *oldname = malloc(sizeof(char)*16);
+  // Tamanho 13 fixo dos arquivos de saida.
   char *newName = malloc(sizeof(char)*13);
   if (fileValue) {
     if (order == 0) {
@@ -47,7 +49,6 @@ void renameFile(int fileValue, int P, int order) {
   } else {
     if (order == 0) {
       sprintf(oldname, "f%d.txt", P);
-      // strcpy(oldname ,"f3.txt");
       strcpy(newName ,"sorted0.txt");
     } else {
       sprintf(oldname, "f%d.txt", P);
@@ -60,7 +61,7 @@ void renameFile(int fileValue, int P, int order) {
 }
 
 /**
- * Une os arquivos no arquivo de saída baseado em suas querys
+ * Une os arquivos no arquivo de saída baseado nas posições de cada lista.
  */
 void mergeFiles(char* outputFile, List *L1, List *L2) {
   int *array1 = getArray(L1);
@@ -82,9 +83,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
 		exit(1);
 	}
   int K1 = wordsPerLine(input1);
-  printf("K1: %d\n", K1);
   int K2 = wordsPerLine(input2);
-  printf("K2: %d\n", K2);
   char *line = NULL;
   long unsigned int n = 0;
   char **matrix1 = malloc(sizeof(char*) * K1);
@@ -135,27 +134,11 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
     }
       token = strtok(NULL, ",");
   }
-  for (int i = 0; i < K1; i ++) {
-    printf("%s ", matrix1[i]);
-  }
-  putchar('\n');
-  for (int i = 0; i < K2; i ++) {
-    printf("%s ", matrix2[i]);
-  }
-  putchar('\n');
-
-
 
   while (1) {
     int result = 0;
     for (int i = 0; i < listLength; i++) {
-      // int intg1 = atoi(matrix1[L1[i]]);
-      // int intg2 = atoi(matrix2[L2[i]]);
-      // if (intg1 != 0 && intg2 != 0) {
-      //   result = intg1 - intg2;
-      // } else {
         result = strcmp(matrix1[array1[i]], matrix2[array2[i]]);
-      // }
       if (result != 0) {
         break;
       }
@@ -187,7 +170,6 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
     }
     if (result < 0) {
       getline(&line, &n, input1);
-
       if (feof(input1)) {
         break;
       }
@@ -214,7 +196,6 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
     if (result == 0) {
       int j = 0;
       for (int i = 0; i < listLength; i++) {
-        // if (i == listLength - 1) {
           if (j == 0) {
             fprintf(outFile, "%s", matrix1[array1[i]]);
             j++;
@@ -223,7 +204,6 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
           }
           strcpy(matrix1[array1[i]], "-");
           strcpy(matrix2[array2[i]], "-");
-        
       }
       for (int i = 0; i < K1; i++) {
         if (strcmp(matrix1[i], "-") != 0) {
@@ -246,8 +226,6 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
         }
       }
       fprintf(outFile, "\n");
-
-
       getline(&line, &n, input1);
 
       if (feof(input1)) {
@@ -272,7 +250,6 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
         }
         token = strtok(NULL, ",");
       }
-
       getline(&line, &n, input2);
       if (feof(input2)) {
         break;
@@ -296,9 +273,9 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
         }
           token = strtok(NULL, ",");
       }
-
     }
   }
+  // Liberando o que foi alocado.
   free(line);
   for (int i = 0; i < K1; i ++) {
     free(matrix1[i]);    

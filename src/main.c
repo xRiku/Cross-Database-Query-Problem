@@ -16,18 +16,14 @@ int main(int argc, char** argv) {
   //Listas para query nos bancos
   List* L1 = createList(argv[3], listLength);
   List* L2 = createList(argv[4], listLength);
-  // int *L1 = listToIntArray(argv[3], listLength);
-  // int *L2 = listToIntArray(argv[4], listLength);
-  // char *fileName = NULL;
-  FILE **files = createFiles(3);
+  FILE **files = createFiles(2);
   openFile(&files[0], argv[5], "r");
   openFile(&files[1], argv[6], "r");
   externalSorting(files[0], M, P, L1, 0);
   externalSorting(files[1], M, P, L2, 1);
   mergeFiles(argv[7], L1, L2);
   
-  // deleteIntArray(L1);
-  // deleteIntArray(L2);
+  // deletePFiles();
   deleteList(L1);
   deleteList(L2);
   closeFiles(files, 2);
