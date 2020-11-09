@@ -86,6 +86,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
   int K2 = wordsPerLine(input2);
   char *line = NULL;
   long unsigned int n = 0;
+  // Nome arbitrário porém so guarda uma linha de cada arquivo.
   char **matrix1 = malloc(sizeof(char*) * K1);
   char **matrix2 = malloc(sizeof(char*) * K2);
   for (int i = 0; i < K1; i ++) {
@@ -97,7 +98,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
   getline(&line, &n, input1);
   char *token = strtok(line, ",");
   for (int j = 0; j < K1; j++) {
-    // Para excluir o '\n' do fim da linha
+    // Para excluir o '\n' do fim da linha.
     if (token[strlen(token) - 1] == '\n') {
       char *lineAux = malloc(sizeof(char) * SLOTS);
       for (int k = 0; k < strlen(token); k++) {
@@ -117,7 +118,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
   getline(&line, &n, input2);
   token = strtok(line, ",");
   for (int j = 0; j < K2; j++) {
-    // Para excluir o '\n' do fim da linha
+    // Para excluir o '\n' do fim da linha.
     if (token[strlen(token) - 1] == '\n') {
       char *lineAux = malloc(sizeof(char) * SLOTS);
       for (int k = 0; k < strlen(token); k++) {
@@ -134,9 +135,11 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
     }
       token = strtok(NULL, ",");
   }
-
+  // Aqui acontece o algortimo de merge proposto no pdf.
   while (1) {
     int result = 0;
+    // O resultado de result indica em qual arquivo acontecerá o getline.
+    // Se derem match a leitura da proxima linha será feita em ambas.
     for (int i = 0; i < listLength; i++) {
         result = strcmp(matrix1[array1[i]], matrix2[array2[i]]);
       if (result != 0) {
@@ -150,7 +153,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       }
       token = strtok(line, ",");
       for (int j = 0; j < K2; j++) {
-        // Para excluir o '\n' do fim da linha
+        // Para excluir o '\n' do fim da linha.
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
           for (int k = 0; k < strlen(token); k++) {
@@ -175,7 +178,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       }
       char *token = strtok(line, ",");
       for (int j = 0; j < K1; j++) {
-        // Para excluir o '\n' do fim da linha
+        // Para excluir o '\n' do fim da linha.
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
           for (int k = 0; k < strlen(token); k++) {
@@ -193,6 +196,9 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
         token = strtok(NULL, ",");
       }
     }
+    // Se as listas derem match, a posição correspondente da lista em cada linha
+    // é lida, o elemento da posição escrito no arquivo de saída e a posição marcada com "-". 
+    // Depois é feito uma leitura para verificar se já foi marcado. Se não foi, o elemento da posição é escrito no arquivo.
     if (result == 0) {
       int j = 0;
       for (int i = 0; i < listLength; i++) {
@@ -233,7 +239,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       }
       char *token = strtok(line, ",");
       for (int j = 0; j < K1; j++) {
-        // Para excluir o '\n' do fim da linha
+        // Para excluir o '\n' do fim da linha.
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
           for (int k = 0; k < strlen(token); k++) {
@@ -256,7 +262,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       }
       token = strtok(line, ",");
       for (int j = 0; j < K2; j++) {
-        // Para excluir o '\n' do fim da linha
+        // Para excluir o '\n' do fim da linha.
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
           for (int k = 0; k < strlen(token); k++) {
