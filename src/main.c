@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
   int M = atoi(argv[2]);
   int listLength = countCommas(argv[3]) + 1;
 
-  //Listas para query nos bancos
+  //Listas para colunas nos bancos
   List* L1 = createList(argv[3], listLength);
   List* L2 = createList(argv[4], listLength);
   FILE **files = createFiles(2);

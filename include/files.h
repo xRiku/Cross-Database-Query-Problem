@@ -18,6 +18,6 @@ void mergeFiles(char* outputFile, List *List1, List *List2);
 
 void closeFiles(FILE **, int);
 
-
+int wordsPerLine(FILE *file);
 
 #endif

@@ -101,7 +101,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
     // Para excluir o '\n' do fim da linha.
     if (token[strlen(token) - 1] == '\n') {
       char *lineAux = malloc(sizeof(char) * SLOTS);
-      for (int k = 0; k < strlen(token); k++) {
+      for (unsigned k = 0; k < strlen(token); k++) {
         if (token[k] == '\n') {
           lineAux[k] = '\0';  
           break;
@@ -121,7 +121,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
     // Para excluir o '\n' do fim da linha.
     if (token[strlen(token) - 1] == '\n') {
       char *lineAux = malloc(sizeof(char) * SLOTS);
-      for (int k = 0; k < strlen(token); k++) {
+      for (unsigned k = 0; k < strlen(token); k++) {
         if (token[k] == '\n') {
           lineAux[k] = '\0';  
           break;
@@ -156,7 +156,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
         // Para excluir o '\n' do fim da linha.
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (int k = 0; k < strlen(token); k++) {
+          for (unsigned k = 0; k < strlen(token); k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -181,7 +181,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
         // Para excluir o '\n' do fim da linha.
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (int k = 0; k < strlen(token); k++) {
+          for (unsigned k = 0; k < strlen(token); k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -242,7 +242,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
         // Para excluir o '\n' do fim da linha.
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (int k = 0; k < strlen(token); k++) {
+          for (unsigned int k = 0; k < strlen(token); k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -265,7 +265,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
         // Para excluir o '\n' do fim da linha.
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (int k = 0; k < strlen(token); k++) {
+          for (unsigned k = 0; k < strlen(token); k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -307,4 +307,17 @@ void closeFiles(FILE **files, int n) {
   free(files);
 }
 
+/**
+ * Calcula o número de palavras por linha para ser alocado em memória.
+ */
+int wordsPerLine(FILE *file) {
+  // Evitar erro no valgrind
+  char *line = NULL;
+  long unsigned int n = 0;
+  getline(&line, &n, file);
+  int K = countCommas(line) + 1;
+  rewind(file);
+  free(line);
+  return K;
+}
 

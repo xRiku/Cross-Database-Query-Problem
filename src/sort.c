@@ -4,20 +4,6 @@
 #include "../include/list.h"
 
 /**
- * Calcula o número de palavras por linha para ser alocado em memória.
- */
-int wordsPerLine(FILE *file) {
-  // Evitar erro no valgrind
-  char *line = NULL;
-  long unsigned int n = 0;
-  getline(&line, &n, file);
-  int K = countCommas(line) + 1;
-  rewind(file);
-  free(line);
-  return K;
-}
-
-/**
  * Comparador para ordenação no quicksort baseado na lista de colunas.
  */
 int comparatorFromList(void *a, void *b, void *arg) {
@@ -88,7 +74,6 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
   int *array = getArray(list);
   int nCopy = N;
   int validationLines = (N % (M * P) == 0 ? N / (M * P) : N / (M * P) + 1);
-  // printf("Validation: %d\n", validationLines);
   char ***auxMatrix = createMemoMatrix(P, K);
   int **pValid = validationBlockMatrix(M, N, P, validationLines);
 
@@ -125,7 +110,7 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
       for (int j = 0; j < K; j ++) {
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (int k = 0; k < strlen(token); k++) {
+          for (unsigned k = 0; k < strlen(token); k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -142,19 +127,6 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
       
     }
 
-
-    // for (int i = 0; i < P; i++) {
-    //   for (int j = 0; j < K; j++) {
-    //     // if (pValid[i][j] == 0) {
-    //     //   continue;
-    //     // }
-    //     printf("%s ", auxMatrix[i][j]);
-    //   }
-    // putchar('\n');
-    // }
-    // putchar('\n');
-
-
     int halt = 0;
     for (int i = 0; halt != P; i++) {
       if (i == 0) {
@@ -166,12 +138,11 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
       }
       if (i < P && pValid[a][i] != 0 && i == firstStringIndex) {
         getline(&line, &n, pfiles[P - pCopy + i]);
-        // printf("%s", line);
         char *token = strtok(line, ",");
         for (int j = 0; j < K; j ++) {
           if (token[strlen(token) - 1] == '\n') {
             char *lineAux = malloc(sizeof(char) * SLOTS);
-            for (int k = 0; k < strlen(token); k++) {
+            for (unsigned k = 0; k < strlen(token); k++) {
               if (token[k] == '\n') {
                 lineAux[k] = '\0';  
                 break;
@@ -187,9 +158,6 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
         }
         firstStringIndex = -1;
       }
-      // if (i == P - 2) {
-      //   break;
-      // }
       
       
       if (i == P ) {
@@ -211,14 +179,7 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
           for (int j = 0; j < K; j++) {
             int result = 0;
             for (int k = 0; k < listLength; k++) {
-              // int intg1 = atoi(firstString[list[k]]);
-              // int intg2 = atoi(auxMatrix[b][list[k]]);
-              // if (intg1 != 0 && intg2 != 0) {
-              //   result = intg1 - intg2;
-              // } else {
-                // printf("%s\n", auxMatrix[b][j][k]);
                 result = strcmp(firstString[array[k]], auxMatrix[b][array[k]]);
-              // }
               if (result != 0) {
                 break;
               }
@@ -231,14 +192,9 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
             }
           }
         }
-        // for (int w = 0; w < K; w++) {
-        //   printf("%s ", firstString[w]);
-        // }
-        // putchar('\n');
+
         pValid[a][firstStringIndex]--;
-        // printf("Melhor %d\n", firstStringIndex);
         int chosenFile = (a + 1) % P == 0 ? P - 1 : ((a + 1) % P ) - 1;
-        // printf("File: %d\n", chosenFile);
         for (int w = 0; w < K; w++) {
           if (w == K - 1) {
             fprintf(pfiles[chosenFile + pCopy], "%s\n", firstString[w]);
@@ -253,14 +209,7 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
     firstStringIndex = -1;
   }
   
-  
-  /* for (int i = 0; i < P; i++) {
-    for (int j = 0; j < K; j++) {
-      printf("%s ", auxMatrix[i][j]);
-    }
-    putchar('\n');
-  } */
-
+  // Libera o que foi alocado.
   for (int i = 0; i < K; i ++) {
     free(firstString[i]);
   }
@@ -273,14 +222,13 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
 }
 
 /**
- * Compara os blocos (M linhas de cada arquivo) para ordenação
+ * Compara os blocos para ordenação e finaliza quando só sobra um arquivo escrito.
  */
 void compareBlock(FILE** pfiles, int P, int M, List* list, int K, int N, int order) {
   int writtenFiles = 0;
   int i = 0;
   int pCopy = 0;
   while (writtenFiles != 1) {
-    // printf("writtenFiles: %d\n", writtenFiles);
     if (pCopy == 0) {
       writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
       pCopy = P;
@@ -288,24 +236,21 @@ void compareBlock(FILE** pfiles, int P, int M, List* list, int K, int N, int ord
       writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
       pCopy = 0;
     }
-    // printf("writtenFiles: %d\n", writtenFiles);
     rewindFiles(pfiles, 2*P);
     i++;
-    // printf("SubDone!\n");
   }
 
   renameFile(pCopy, P, order);
-  // printf("Done!\n");
-  // printf("Maior: %d\n", lowestLine(pfiles, P, M, list, K, N, 0));
 }
 
 /**
  * Realiza a ordenação externa intercalada.
+ * Foi escolhido o uso de qsort_r para poder passar a lista de colunas como argumento.
  */
 void externalSorting(FILE *file, int M, int P, List *list, int order) {
   int N = 0;
   int listLength = getSize(list); 
-  // Número de iterações da memoria ate o arquivo terminar
+  // Número de iterações da memoria ate o arquivo terminar.
   FILE **pfiles = createFiles(2 * P);
   char *fileName = malloc(sizeof(char)*16);
   for (int i = 0; i < 2 * P; i++) {
@@ -313,7 +258,6 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
     openFile(&pfiles[i], fileName, "w+");
   }
   int K = wordsPerLine(file);
-  // printf("K = %d\n", K);
   char ***matrix = createMemoMatrix(M, K);
   char *line = NULL;
   long unsigned int n = 0;
@@ -321,21 +265,20 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
   int preventRepeated = 0;
   int halt;
   while(!feof(file)) {
-    //Saber em que iteração parar para imprimir no arquivo
+    // Saber em que iteração parar para imprimir no arquivo.
     halt = -1;
     for (int i = 0; i < M; i++) {
       getline(&line, &n, file);
-      // printf("%s", line);
       if (feof(file)) {
           halt = i;
         break;
       }
       char *token = strtok(line, ",");
       for (int j = 0; j < K; j++) {
-        // Para excluir o '\n' do fim da linha
+        // Para excluir o '\n' do fim da linha.
         if (token[strlen(token) - 1] == '\n') {
           char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (int k = 0; k < strlen(token); k++) {
+          for (unsigned k = 0; k < strlen(token); k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -353,40 +296,31 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
       N++;
     }
 
-    // printf("HALT: %d\n", halt);
+    // Se halt for diferente de -1 é preciso ler as linhas remanecentes do tamanho de halt.
     if (halt != -1) {
       char ***auxMatrix = createMemoMatrix(halt, K);
       for (int i = 0; i < halt; i++) {
         for (int j = 0; j < K; j++) {
           strcpy(auxMatrix[i][j], matrix[i][j]);
-          // printf("%s ", auxMatrix[i][j]);
         }
-        // putchar('\n');
       }
       char ***auxMatrix2 = matrix;
       matrix = auxMatrix;
-      // for (int i = 0; i < halt; i++) {
-      //   for (int j = 0; j < K; j++) {
-      //     printf("%s ", auxMatrix[i][j]);
-      //   }
-      //   putchar('\n');
-      // }
       auxMatrix = NULL;
       deleteMemoMatrix(auxMatrix2, M, K);
     }
-    // for (int i = 0; i < M; i++) {
-    //   for (int j = 0; j < K; j++) {
-    //     printf("%s ", matrix[i][j]);
-    //   }
-    //   putchar('\n');
-    // }
+
     if (halt == - 1) {
+      // qsort padrão (M linhas).
       qsort_r(matrix, M, sizeof(matrix[0]), comparatorFromList, list);
     } else {
+      // Ultimo qsort com halt linhas.
       qsort_r(matrix, halt, sizeof(matrix[0]), comparatorFromList, list);
     }
     for (int i = 0; i < M; i++) {
       if (i == halt) {
+        // Para de escrever no arquivo para não pegar de uma área out of bounds.
+        // Visto que halt <= M;
         break;
       }
       for (int j = 0; j < K; j++) {
@@ -406,23 +340,14 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
   for (int i = 0; i < P; i++) {
     rewind(pfiles[P+i]);
   }
-  // Até aqui da pra por em uma função talvez
-  // printf("N: %d\n", N);
-  // printf("listLength: %d\n", listLength);
+
+  // Realiza a comparação iterativa dos blocos.
   compareBlock(pfiles, P, M, list, K, N, order);
 
-  // Print da matrix
-  // for (int i = 0; i < M; i++) {
-  //   for (int j = 0; j < K; j++) {
-  //     printf("%s ", matrix[i][j]);
-  //   }
-  //   putchar('\n');
-  // }
-
+  // Realiza a liberação do que foi alocado.
   free(line);
   deleteMemoMatrix(matrix, halt == -1 ? M : halt, K);
   closeFiles(pfiles, 2 * P);
-  
   free(fileName);
 }
 
