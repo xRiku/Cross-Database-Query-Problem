@@ -5,7 +5,7 @@ BIN		:= bin
 SRC		:= src
 INCLUDE	:= include
 
-PROGARGS0	:= 3 5 1,3 4,8 inputs/file100000-100_python.txt inputs/file2.txt outputs/wannabeFile.txt
+PROGARGS0	:= 3 5 1,3 4,8 inputs/pythonfile1.txt inputs/pythonfile2.txt outputs/wannabeFile.txt
 
 PROGARGS	:= 3 5 0,1,4 4,0,1 inputs/file1.txt inputs/file2.txt outputs/wannabeFile.txt
 

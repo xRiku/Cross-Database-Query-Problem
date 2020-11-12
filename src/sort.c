@@ -95,9 +95,10 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
       }
       char *token = strtok(line, ",");
       for (int j = 0; j < K; j ++) {
-        if (token[strlen(token) - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (unsigned k = 0; k < strlen(token); k++) {
+        unsigned tokenLength = strlen(token);
+        if (token[tokenLength - 1] == '\n') {
+          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
+          for (unsigned k = 0; k < tokenLength; k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -127,9 +128,10 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
         getline(&line, &n, pfiles[P - pCopy + i]);
         char *token = strtok(line, ",");
         for (int j = 0; j < K; j ++) {
-          if (token[strlen(token) - 1] == '\n') {
-            char *lineAux = malloc(sizeof(char) * SLOTS);
-            for (unsigned k = 0; k < strlen(token); k++) {
+          unsigned tokenLength = strlen(token);
+          if (token[tokenLength - 1] == '\n') {
+            char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
+            for (unsigned k = 0; k < tokenLength; k++) {
               if (token[k] == '\n') {
                 lineAux[k] = '\0';  
                 break;
@@ -262,9 +264,10 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
       char *token = strtok(line, ",");
       for (int j = 0; j < K; j++) {
         // Para excluir o '\n' do fim da linha.
-        if (token[strlen(token) - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (unsigned k = 0; k < strlen(token); k++) {
+        unsigned tokenLength = strlen(token);
+        if (token[tokenLength - 1] == '\n') {
+          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
+          for (unsigned k = 0; k < tokenLength; k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;

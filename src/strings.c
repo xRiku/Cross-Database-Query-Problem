@@ -2,7 +2,7 @@
 
 
 /**
- * Aloca espaço para a matriz de caracteres
+ * Aloca espaço para a matriz de caracteres.
  */
 char ***createMemoMatrix(int M, int K) {
   char ***matrix = malloc(sizeof(char**) * M);
@@ -30,7 +30,7 @@ void deleteMemoMatrix(char ***matrix, int M, int K) {
 }
 
 /**
- * Conta o número de vírgulas na string
+ * Conta o número de vírgulas na string.
  */
 int countCommas(char *str) {
   int n = 0;
