@@ -86,7 +86,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
   int K2 = wordsPerLine(input2);
   char *line = NULL;
   long unsigned int n = 0;
-  // Nome arbitrário porém so guarda uma linha de cada arquivo.
+  // Guarda apenas uma linha de cada arquivo.
   char **matrix1 = malloc(sizeof(char*) * K1);
   char **matrix2 = malloc(sizeof(char*) * K2);
   for (int i = 0; i < K1; i ++) {
@@ -99,9 +99,10 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
   char *token = strtok(line, ",");
   for (int j = 0; j < K1; j++) {
     // Para excluir o '\n' do fim da linha.
-    if (token[strlen(token) - 1] == '\n') {
-      char *lineAux = malloc(sizeof(char) * SLOTS);
-      for (unsigned k = 0; k < strlen(token); k++) {
+    unsigned tokenLength = strlen(token);
+    if (token[tokenLength - 1] == '\n') {
+      char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
+      for (unsigned k = 0; k < tokenLength; k++) {
         if (token[k] == '\n') {
           lineAux[k] = '\0';  
           break;
@@ -119,9 +120,10 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
   token = strtok(line, ",");
   for (int j = 0; j < K2; j++) {
     // Para excluir o '\n' do fim da linha.
-    if (token[strlen(token) - 1] == '\n') {
-      char *lineAux = malloc(sizeof(char) * SLOTS);
-      for (unsigned k = 0; k < strlen(token); k++) {
+    unsigned tokenLength = strlen(token);
+    if (token[tokenLength - 1] == '\n') {
+      char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
+      for (unsigned k = 0; k < tokenLength; k++) {
         if (token[k] == '\n') {
           lineAux[k] = '\0';  
           break;
@@ -154,9 +156,10 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       token = strtok(line, ",");
       for (int j = 0; j < K2; j++) {
         // Para excluir o '\n' do fim da linha.
-        if (token[strlen(token) - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (unsigned k = 0; k < strlen(token); k++) {
+        unsigned tokenLength = strlen(token);
+        if (token[tokenLength - 1] == '\n') {
+          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
+          for (unsigned k = 0; k < tokenLength; k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -179,9 +182,10 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       char *token = strtok(line, ",");
       for (int j = 0; j < K1; j++) {
         // Para excluir o '\n' do fim da linha.
-        if (token[strlen(token) - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (unsigned k = 0; k < strlen(token); k++) {
+        unsigned tokenLength = strlen(token);
+        if (token[tokenLength - 1] == '\n') {
+          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
+          for (unsigned k = 0; k < tokenLength; k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -240,9 +244,10 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       char *token = strtok(line, ",");
       for (int j = 0; j < K1; j++) {
         // Para excluir o '\n' do fim da linha.
-        if (token[strlen(token) - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (unsigned int k = 0; k < strlen(token); k++) {
+        unsigned tokenLength = strlen(token);
+        if (token[tokenLength - 1] == '\n') {
+          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
+          for (unsigned int k = 0; k < tokenLength; k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -263,9 +268,10 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       token = strtok(line, ",");
       for (int j = 0; j < K2; j++) {
         // Para excluir o '\n' do fim da linha.
-        if (token[strlen(token) - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * SLOTS);
-          for (unsigned k = 0; k < strlen(token); k++) {
+        unsigned tokenLength = strlen(token);
+        if (token[tokenLength - 1] == '\n') {
+          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
+          for (unsigned k = 0; k < tokenLength; k++) {
             if (token[k] == '\n') {
               lineAux[k] = '\0';  
               break;
@@ -277,7 +283,7 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
         } else {
           strcpy(matrix2[j], token);
         }
-          token = strtok(NULL, ",");
+        token = strtok(NULL, ",");
       }
     }
   }
