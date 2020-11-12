@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 
 
   // Fechamentos de arquivos e desalocação de memória.
-  deletePFiles(P);
+  // deletePFiles(P);
   deleteList(L1);
   deleteList(L2);
   closeFiles(files, 2);

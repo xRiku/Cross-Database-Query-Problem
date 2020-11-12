@@ -72,16 +72,10 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
 		fprintf(stderr, "Erro ao abrir %s\n", outputFile);
 		exit(1);
 	}
-  FILE *input1 = fopen("sorted0.txt", "r");
-  if(input1 == NULL){
-		fprintf(stderr, "Erro ao abrir %s\n", "sorted0");
-		exit(1);
-	}
-  FILE *input2 = fopen("sorted1.txt", "r");
-  if(input2 == NULL){
-		fprintf(stderr, "Erro ao abrir %s\n", "sorted1");
-		exit(1);
-	}
+  FILE *input1 = NULL;
+  FILE *input2 = NULL;
+  openFile(&input1, "sorted0.txt", "r");
+  openFile(&input2, "sorted1.txt", "r");
   int K1 = wordsPerLine(input1);
   int K2 = wordsPerLine(input2);
   char *line = NULL;
@@ -95,48 +89,19 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
   for (int i = 0; i < K2; i ++) {
     matrix2[i] = malloc(sizeof(char) * SLOTS);
   }
+
+  // Lê uma linha de cada arquivo.
   getline(&line, &n, input1);
-  char *token = strtok(line, ",");
-  for (int j = 0; j < K1; j++) {
-    // Para excluir o '\n' do fim da linha.
-    unsigned tokenLength = strlen(token);
-    if (token[tokenLength - 1] == '\n') {
-      char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
-      for (unsigned k = 0; k < tokenLength; k++) {
-        if (token[k] == '\n') {
-          lineAux[k] = '\0';  
-          break;
-        }
-        lineAux[k] = token[k];
-      }
-      strcpy(matrix1[j], lineAux);
-      free(lineAux);
-    } else {
-      strcpy(matrix1[j], token);
-    }
-    token = strtok(NULL, ",");
+  if (feof(input1)) {
+    return;
   }
+  writeMatrixLine(K1, matrix1, line);
   getline(&line, &n, input2);
-  token = strtok(line, ",");
-  for (int j = 0; j < K2; j++) {
-    // Para excluir o '\n' do fim da linha.
-    unsigned tokenLength = strlen(token);
-    if (token[tokenLength - 1] == '\n') {
-      char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
-      for (unsigned k = 0; k < tokenLength; k++) {
-        if (token[k] == '\n') {
-          lineAux[k] = '\0';  
-          break;
-        }
-        lineAux[k] = token[k];
-      }
-      strcpy(matrix2[j], lineAux);
-      free(lineAux);
-    } else {
-      strcpy(matrix2[j], token);
-    }
-      token = strtok(NULL, ",");
+  if (feof(input2)) {
+    return;
   }
+  writeMatrixLine(K2, matrix2, line);
+
   // Aqui acontece o algortimo de merge proposto no pdf.
   while (1) {
     int result = 0;
@@ -153,52 +118,14 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       if (feof(input2)) {
         break;
       }
-      token = strtok(line, ",");
-      for (int j = 0; j < K2; j++) {
-        // Para excluir o '\n' do fim da linha.
-        unsigned tokenLength = strlen(token);
-        if (token[tokenLength - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
-          for (unsigned k = 0; k < tokenLength; k++) {
-            if (token[k] == '\n') {
-              lineAux[k] = '\0';  
-              break;
-            }
-            lineAux[k] = token[k];
-          }
-          strcpy(matrix2[j], lineAux);
-          free(lineAux);
-        } else {
-          strcpy(matrix2[j], token);
-        }
-          token = strtok(NULL, ",");
-      }
+      writeMatrixLine(K2, matrix2, line);
     }
     if (result < 0) {
       getline(&line, &n, input1);
       if (feof(input1)) {
         break;
       }
-      char *token = strtok(line, ",");
-      for (int j = 0; j < K1; j++) {
-        // Para excluir o '\n' do fim da linha.
-        unsigned tokenLength = strlen(token);
-        if (token[tokenLength - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
-          for (unsigned k = 0; k < tokenLength; k++) {
-            if (token[k] == '\n') {
-              lineAux[k] = '\0';  
-              break;
-            }
-            lineAux[k] = token[k];
-          }
-          strcpy(matrix1[j], lineAux);
-          free(lineAux);
-        } else {
-          strcpy(matrix1[j], token);
-        }
-        token = strtok(NULL, ",");
-      }
+      writeMatrixLine(K1, matrix1, line);
     }
     // Se as listas derem match, a posição correspondente da lista em cada linha
     // é lida, o elemento da posição escrito no arquivo de saída e a posição marcada com "-". 
@@ -241,53 +168,16 @@ void mergeFiles(char* outputFile, List *L1, List *L2) {
       if (feof(input1)) {
         break;
       }
-      char *token = strtok(line, ",");
-      for (int j = 0; j < K1; j++) {
-        // Para excluir o '\n' do fim da linha.
-        unsigned tokenLength = strlen(token);
-        if (token[tokenLength - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
-          for (unsigned int k = 0; k < tokenLength; k++) {
-            if (token[k] == '\n') {
-              lineAux[k] = '\0';  
-              break;
-            }
-            lineAux[k] = token[k];
-          }
-          strcpy(matrix1[j], lineAux);
-          free(lineAux);
-        } else {
-          strcpy(matrix1[j], token);
-        }
-        token = strtok(NULL, ",");
-      }
+      writeMatrixLine(K1, matrix1, line);
       getline(&line, &n, input2);
       if (feof(input2)) {
         break;
       }
-      token = strtok(line, ",");
-      for (int j = 0; j < K2; j++) {
-        // Para excluir o '\n' do fim da linha.
-        unsigned tokenLength = strlen(token);
-        if (token[tokenLength - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
-          for (unsigned k = 0; k < tokenLength; k++) {
-            if (token[k] == '\n') {
-              lineAux[k] = '\0';  
-              break;
-            }
-            lineAux[k] = token[k];
-          }
-          strcpy(matrix2[j], lineAux);
-          free(lineAux);
-        } else {
-          strcpy(matrix2[j], token);
-        }
-        token = strtok(NULL, ",");
-      }
+      writeMatrixLine(K2, matrix2, line);
     }
   }
-  // Liberando o que foi alocado.
+
+  // Liberando memória alocada.
   free(line);
   for (int i = 0; i < K1; i ++) {
     free(matrix1[i]);    
@@ -317,7 +207,7 @@ void closeFiles(FILE **files, int n) {
  * Calcula o número de palavras por linha para ser alocado em memória.
  */
 int wordsPerLine(FILE *file) {
-  // Evitar erro no valgrind
+  // Evitar erro no valgrind.
   char *line = NULL;
   long unsigned int n = 0;
   getline(&line, &n, file);

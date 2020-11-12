@@ -93,26 +93,7 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
       if (feof(pfiles[P - pCopy + i])) {
         break;
       }
-      char *token = strtok(line, ",");
-      for (int j = 0; j < K; j ++) {
-        unsigned tokenLength = strlen(token);
-        if (token[tokenLength - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
-          for (unsigned k = 0; k < tokenLength; k++) {
-            if (token[k] == '\n') {
-              lineAux[k] = '\0';  
-              break;
-            }
-            lineAux[k] = token[k];
-          }
-          strcpy(auxMatrix[i][j], lineAux);
-          free(lineAux);
-        } else {
-          strcpy(auxMatrix[i][j], token);
-        }
-        token = strtok(NULL, ",");
-      }
-      
+      writeMatrixLine(K, auxMatrix[i], line);
     }
 
     int halt = 0;
@@ -126,25 +107,10 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
       }
       if (i < P && pValid[a][i] != 0 && i == firstStringIndex) {
         getline(&line, &n, pfiles[P - pCopy + i]);
-        char *token = strtok(line, ",");
-        for (int j = 0; j < K; j ++) {
-          unsigned tokenLength = strlen(token);
-          if (token[tokenLength - 1] == '\n') {
-            char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
-            for (unsigned k = 0; k < tokenLength; k++) {
-              if (token[k] == '\n') {
-                lineAux[k] = '\0';  
-                break;
-              }
-              lineAux[k] = token[k];
-            }
-            strcpy(auxMatrix[i][j], lineAux);
-            free(lineAux);
-          } else {
-            strcpy(auxMatrix[i][j], token);
-          }
-          token = strtok(NULL, ",");
+        if (feof(pfiles[P - pCopy + i])) {
+          break;
         }
+        writeMatrixLine(K, auxMatrix[i], line);
         firstStringIndex = -1;
       }
       
@@ -258,30 +224,10 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
     for (int i = 0; i < M; i++) {
       getline(&line, &n, file);
       if (feof(file)) {
-          halt = i;
+        halt = i;
         break;
       }
-      char *token = strtok(line, ",");
-      for (int j = 0; j < K; j++) {
-        // Para excluir o '\n' do fim da linha.
-        unsigned tokenLength = strlen(token);
-        if (token[tokenLength - 1] == '\n') {
-          char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
-          for (unsigned k = 0; k < tokenLength; k++) {
-            if (token[k] == '\n') {
-              lineAux[k] = '\0';  
-              break;
-            }
-            lineAux[k] = token[k];
-          }
-          strcpy(matrix[i][j], lineAux);
-          free(lineAux);
-        } else {
-          strcpy(matrix[i][j], token);
-        }
-          token = strtok(NULL, ",");
-      }
-
+      writeMatrixLine(K, matrix[i], line);
       N++;
     }
 

@@ -12,5 +12,7 @@ void deleteMemoMatrix(char ***matrix, int M, int K);
 
 int countCommas(char *);
 
+void writeMatrixLine(int K, char **matrix, char* line);
+
 
 #endif
