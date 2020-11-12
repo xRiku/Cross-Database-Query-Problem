@@ -321,3 +321,17 @@ int wordsPerLine(FILE *file) {
   return K;
 }
 
+/**
+ * Deleta os 2P arquivos remanescentes.
+ */
+void deletePFiles(int P) {
+  char *fileName = malloc(sizeof(char)*16);
+  for (int i = 0; i < 2 * P; i++) {
+    sprintf(fileName, "f%d.txt", i);
+    if (access(fileName, F_OK) != -1) {
+      remove(fileName);
+    }
+  }
+  free(fileName);
+}
+

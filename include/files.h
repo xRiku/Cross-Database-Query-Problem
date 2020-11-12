@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include "list.h"
 
 FILE **createFiles(int n);
@@ -19,5 +20,7 @@ void mergeFiles(char* outputFile, List *List1, List *List2);
 void closeFiles(FILE **, int);
 
 int wordsPerLine(FILE *file);
+
+void deletePFiles(int P);
 
 #endif

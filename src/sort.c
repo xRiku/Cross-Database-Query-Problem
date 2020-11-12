@@ -11,7 +11,6 @@ int comparatorFromList(void *a, void *b, void *arg) {
   int *array = getArray(list);
   // Tamanho do vetor arg
   int n = getSize(list);
-  // printf("n: %d\n", n);
   char **g1 = *((char ***) a);
   char **g2 = *((char ***) b);
   int result;
@@ -68,21 +67,12 @@ void deleteValidationMatrix(int** matrix, int validationLines) {
  * Verifica a menor linha (baseado na lista) da tabela.
  */
 // Trocar o nome dessa função
-int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy) {
-  int writtenfiles = 0;
+int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy) {
   int listLength = getSize(list);
   int *array = getArray(list);
-  int nCopy = N;
   int validationLines = (N % (M * P) == 0 ? N / (M * P) : N / (M * P) + 1);
   char ***auxMatrix = createMemoMatrix(P, K);
   int **pValid = validationBlockMatrix(M, N, P, validationLines);
-
-  // for (int i = 0; i < validationLines; i++) {
-  //   for (int j = 0; j < P; j++) {
-  //     printf("%d ", pValid[i][j]);
-  //   }
-  //   putchar('\n');
-  // }
 
   char *line = NULL;
   long unsigned int n = 0;
@@ -94,15 +84,12 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
   }
 
   for (int a = 0; a < validationLines; a++) {
-    // printf("Linha: %d\n", a);
     //leitura 1
     for (int i = 0; i < P; i++) {
-      // printf("%d %d\n", a, i);
       if (pValid[a][i] == 0) {
         continue;
       }   
       getline(&line, &n, pfiles[P - pCopy + i]);
-      // printf("Aqui %s", line);
       if (feof(pfiles[P - pCopy + i])) {
         break;
       }
@@ -224,16 +211,16 @@ int lowestLine(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy)
 /**
  * Compara os blocos para ordenação e finaliza quando só sobra um arquivo escrito.
  */
-void compareBlock(FILE** pfiles, int P, int M, List* list, int K, int N, int order) {
+void compareBlocks(FILE** pfiles, int P, int M, List* list, int K, int N, int order) {
   int writtenFiles = 0;
   int i = 0;
   int pCopy = 0;
   while (writtenFiles != 1) {
     if (pCopy == 0) {
-      writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
+      writtenFiles = blockSorting(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
       pCopy = P;
     } else {
-      writtenFiles = lowestLine(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
+      writtenFiles = blockSorting(pfiles, P, pow(P, i) * M, list, K, N, pCopy);
       pCopy = 0;
     }
     rewindFiles(pfiles, 2*P);
@@ -248,8 +235,8 @@ void compareBlock(FILE** pfiles, int P, int M, List* list, int K, int N, int ord
  * Foi escolhido o uso de qsort_r para poder passar a lista de colunas como argumento.
  */
 void externalSorting(FILE *file, int M, int P, List *list, int order) {
+  // Número de páginas
   int N = 0;
-  int listLength = getSize(list); 
   // Número de iterações da memoria ate o arquivo terminar.
   FILE **pfiles = createFiles(2 * P);
   char *fileName = malloc(sizeof(char)*16);
@@ -262,8 +249,7 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
   char *line = NULL;
   long unsigned int n = 0;
   int pCopy = P;
-  int preventRepeated = 0;
-  int halt;
+  int halt = -1;
   while(!feof(file)) {
     // Saber em que iteração parar para imprimir no arquivo.
     halt = -1;
@@ -292,7 +278,7 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
         }
           token = strtok(NULL, ",");
       }
-      // Número de páginas
+
       N++;
     }
 
@@ -320,7 +306,7 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
     for (int i = 0; i < M; i++) {
       if (i == halt) {
         // Para de escrever no arquivo para não pegar de uma área out of bounds.
-        // Visto que halt <= M;
+        // Visto que halt <= M.
         break;
       }
       for (int j = 0; j < K; j++) {
@@ -342,7 +328,7 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
   }
 
   // Realiza a comparação iterativa dos blocos.
-  compareBlock(pfiles, P, M, list, K, N, order);
+  compareBlocks(pfiles, P, M, list, K, N, order);
 
   // Realiza a liberação do que foi alocado.
   free(line);
