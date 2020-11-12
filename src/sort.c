@@ -85,7 +85,7 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
 
   // O entendimento dessa função é um pouco complicado visto que foi feito de forma iterativa,
   // portanto possui muitos laços de repetição.
-  // As comparações são feitas baseado na matriz de validação.
+  // As comparações são feitas baseado na matriz de validação, quando o elemento da posição é 0 não se pode fazer mais leituras.
   // É uma matriz que possui como linhas o número de iterações necessárias para ler todas as linhas restantes
   // e como colunas P dispositivos, onde cada elemento representa o número de linhas a serem lidas daquele bloco.
   for (int a = 0; a < validationLines; a++) {
@@ -119,7 +119,7 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
         firstStringIndex = -1;
       }
       
-      
+      // Verifica se a posição é valida para pegar a primeira string.
       if (i == P ) {
         int valid = -1;
         for (int j = 0; j < P; j++) {
@@ -132,6 +132,8 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
           strcpy(firstString[j], auxMatrix[valid][j]);
         }
         firstStringIndex = valid;
+        
+        // Decide qual string entre as linhas do bloco é a menor.
         for (int b = 0; b < P; b++) {
           if (pValid[a][b] == 0) {
             continue;
@@ -152,7 +154,9 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
             }
           }
         }
-
+        
+        // Diminui uma leitura disponivel da menor string.
+        // Escreve a atual no arquivo.
         pValid[a][firstStringIndex]--;
         int chosenFile = (a + 1) % P == 0 ? P - 1 : ((a + 1) % P ) - 1;
         for (int w = 0; w < K; w++) {
