@@ -83,6 +83,11 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
     firstString[i] = malloc(sizeof(char) * SLOTS);
   }
 
+  // O entendimento dessa função é um pouco complicado visto que foi feito de forma iterativa,
+  // portanto possui muitos laços de repetição.
+  // As comparações são feitas baseado na matriz de validação.
+  // É uma matriz que possui como linhas o número de iterações necessárias para ler todas as linhas restantes
+  // e como colunas P dispositivos, onde cada elemento representa o número de linhas a serem lidas daquele bloco.
   for (int a = 0; a < validationLines; a++) {
     //leitura 1
     for (int i = 0; i < P; i++) {
