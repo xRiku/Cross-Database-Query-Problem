@@ -129,6 +129,10 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
           }
         }
         for (int j = 0; j < K; j++) {
+          unsigned length = strlen(auxMatrix[valid][j]);
+          if (length + 1 > SLOTS) {
+            firstString[j] = realloc(firstString[j], length + 1);
+          }
           strcpy(firstString[j], auxMatrix[valid][j]);
         }
         firstStringIndex = valid;
@@ -149,6 +153,10 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
             if (result > 0) {
               firstStringIndex = b;
               for (int k = 0; k < K; k++) {
+                unsigned length = strlen(auxMatrix[b][k]);
+                if (length + 1 > SLOTS) {
+                  firstString[k] = realloc(firstString[k], length + 1);
+                }
                 strcpy(firstString[k], auxMatrix[b][k]);
               }
             }
@@ -245,6 +253,10 @@ void externalSorting(FILE *file, int M, int P, List *list, int order) {
       char ***auxMatrix = createMemoMatrix(halt, K);
       for (int i = 0; i < halt; i++) {
         for (int j = 0; j < K; j++) {
+          unsigned length = strlen(matrix[i][j]);
+          if (length + 1 > SLOTS) {
+            auxMatrix[i][j] = (char *) realloc(auxMatrix[i][j], length + 1);
+          }
           strcpy(auxMatrix[i][j], matrix[i][j]);
         }
       }

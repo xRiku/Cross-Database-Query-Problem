@@ -50,6 +50,9 @@ void writeMatrixLine(int K, char **matrix, char* line) {
   for (int j = 0; j < K; j++) {
     // Para excluir o '\n' do fim da linha.
     unsigned tokenLength = strlen(token);
+    if (tokenLength + 1 > SLOTS) {
+      matrix[j] = (char *) realloc(matrix[j], tokenLength + 1);
+    }
     if (token[tokenLength - 1] == '\n') {
       char *lineAux = malloc(sizeof(char) * (tokenLength + 1));
       for (unsigned k = 0; k < tokenLength; k++) {
