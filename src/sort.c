@@ -66,7 +66,6 @@ void deleteValidationMatrix(int** matrix, int validationLines) {
 /**
  * Verifica a menor linha (baseado na lista) da tabela.
  */
-// Trocar o nome dessa função
 int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCopy) {
   int listLength = getSize(list);
   int *array = getArray(list);
@@ -130,6 +129,7 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
         }
         for (int j = 0; j < K; j++) {
           unsigned length = strlen(auxMatrix[valid][j]);
+          // Realoca se ultrapassar SLOTS
           if (length + 1 > SLOTS) {
             firstString[j] = realloc(firstString[j], length + 1);
           }
@@ -139,6 +139,7 @@ int blockSorting(FILE **pfiles, int P, int M, List* list, int K, int N, int pCop
         
         // Decide qual string entre as linhas do bloco é a menor.
         for (int b = 0; b < P; b++) {
+          // Se for 0 quer dizquer que não poder ler mais linhas.
           if (pValid[a][b] == 0) {
             continue;
           }
@@ -200,6 +201,8 @@ void compareBlocks(FILE** pfiles, int P, int M, List* list, int K, int N, int or
   int writtenFiles = 0;
   int i = 0;
   int pCopy = 0;
+  // Interrompe o laço quando o número de arquivos escritos for 1,
+  // ou seja, o arquivo que sobrou é o ordenado.
   while (writtenFiles != 1) {
     if (pCopy == 0) {
       writtenFiles = blockSorting(pfiles, P, pow(P, i) * M, list, K, N, pCopy);

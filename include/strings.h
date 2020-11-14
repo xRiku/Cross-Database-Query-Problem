@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SLOTS 51
+#define SLOTS 61
 
 char ***createMemoMatrix(int M, int K);
 

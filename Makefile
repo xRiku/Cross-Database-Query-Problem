@@ -1,3 +1,8 @@
+# Integrantes
+# Philipe Aguiar Marques
+# Ezequiel Schneider Reinholtz
+# Vitor Ferraz Matos Brunoro
+
 CC		:= gcc
 CFLAGS	:= -Wall -Wextra -O3
 
@@ -9,7 +14,7 @@ PROGARGS0	:= 3 5 1,3 4,8 inputs/pythonfile1.txt inputs/pythonfile2.txt outputs/w
 
 PROGARGS	:= 3 5 0,1,4 4,0,1 inputs/file1.txt inputs/file2.txt outputs/wannabeFile.txt
 
-PROGARGS2	:= 3 5 0,1,4 4,0,1 inputs/2/file1.txt inputs/2/file2.txt inputs/2/wannabeFile.txt
+PROGARGS2	:= 10 10 0,1,4 4,0,1 inputs/2/file1.txt inputs/2/file2.txt inputs/2/wannabeFile.txt
 
 PROGARGS3	:= 2 4 1,0 0,2 inputs/arquivo1.txt inputs/arquivo2.txt outputs/arquivo.txt
 
