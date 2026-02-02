@@ -61,14 +61,14 @@ Output File
 ## Building
 
 ```bash
-make all      # Clean and compile (produces trab2 executable)
+make all      # Clean and compile (produces mergejoin executable)
 make clean    # Remove object files and intermediate outputs
 ```
 
 ## Usage
 
 ```bash
-./trab2 P M L1 L2 file1 file2 output
+./mergejoin P M L1 L2 file1 file2 output
 ```
 
 **Parameters:**
@@ -83,7 +83,7 @@ make clean    # Remove object files and intermediate outputs
 ### Example: Baseline Test
 
 ```bash
-./trab2 3 5 0,1,4 4,0,1 inputs/file1.txt inputs/file2.txt outputs/result.txt
+./mergejoin 3 5 0,1,4 4,0,1 inputs/file1.txt inputs/file2.txt outputs/result.txt
 ```
 
 Joins file1 on columns 0,1,4 with file2 on columns 4,0,1 (in that order).
@@ -91,7 +91,7 @@ Joins file1 on columns 0,1,4 with file2 on columns 4,0,1 (in that order).
 ### Example: Large Dataset Test
 
 ```bash
-./trab2 3 5 1,3 4,8 inputs/pythonfile1.txt inputs/pythonfile2.txt outputs/pythonresult.txt
+./mergejoin 3 5 1,3 4,8 inputs/pythonfile1.txt inputs/pythonfile2.txt outputs/pythonresult.txt
 ```
 
 Handles ~12MB files with person records matching on name+date vs person_id+email.

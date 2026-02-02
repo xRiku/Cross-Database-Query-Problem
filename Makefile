@@ -18,7 +18,7 @@ PROGARGS2	:= 10 10 0,1,4 4,0,1 inputs/2/file1.txt inputs/2/file2.txt inputs/2/wa
 
 PROGARGS3	:= 2 4 1,0 0,2 inputs/arquivo1.txt inputs/arquivo2.txt outputs/arquivo.txt
 
-EXECUTABLE	:= trab2
+EXECUTABLE	:= mergejoin
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
 INCLUDEDIRS	:= $(shell find $(INCLUDE) -type d)
 
